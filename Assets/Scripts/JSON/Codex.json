@@ -1,0 +1,32 @@
+{
+  "rapports": [
+    {
+      "forms": [
+        {
+          "options": [
+            {
+              "button": "Big",
+              "text": "This Fish is big"
+            },
+            {
+              "button": "Small",
+              "text": "look how tiny this fish is!"
+            }
+          ]
+        },
+        {
+          "options": [
+            {
+              "button": "Orange",
+              "text": "It's color is orange apparently"
+            },
+            {
+              "button": "Blue",
+              "text": "Looks kinda blue to me"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

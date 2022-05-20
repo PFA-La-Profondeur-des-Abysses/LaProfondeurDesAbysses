@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
             gameObject.transform.localScale.Set(-1, 1, 1);
         }
 
-        velocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        velocity = new Vector2( (float)(Input.GetAxis("Horizontal") * 2f) , (float)(Input.GetAxis("Vertical") * 2f));
 
         rb.velocity = velocity;
         print(velocity);

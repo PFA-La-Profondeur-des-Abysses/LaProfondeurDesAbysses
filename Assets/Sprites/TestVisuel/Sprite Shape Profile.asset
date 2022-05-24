@@ -17,13 +17,13 @@ MonoBehaviour:
     m_End: 66
     m_Order: 0
     m_Sprites:
-    - {fileID: -4069628985407814602, guid: a4fef30bb3ca5463a9c33c123a81604a, type: 3}
+    - {fileID: 21300000, guid: edb6cf28f071342d7bbc2a3b3d8ab101, type: 3}
   - m_Start: -291
     m_End: -57
     m_Order: 0
     m_Sprites:
-    - {fileID: 1887494081247492234, guid: d501f6d7fa84c4038b7449696f44ff38, type: 3}
-  m_FillTexture: {fileID: 2800000, guid: dface27962ecd5d41a14758b9b5c3244, type: 3}
+    - {fileID: 21300000, guid: 715d5c70d2ef94e2b87c9ba60ec550b0, type: 3}
+  m_FillTexture: {fileID: 2800000, guid: 28ad5f14f923f7e4aa482f2d17726580, type: 3}
   m_CornerSprites:
   - m_CornerType: 0
     m_Sprites:
@@ -49,5 +49,5 @@ MonoBehaviour:
   - m_CornerType: 7
     m_Sprites:
     - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  m_FillOffset: 0.075
+  m_FillOffset: 0.215
   m_UseSpriteBorders: 1

@@ -23,7 +23,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //on check si les controles pour le deplacement sur l'axe horizontal sont pressés
+        //On regarde ensuite la valeur : > 0 = on se déplace vers la droite
+        //                               < 0 = on se déplace vers la gauche
         if (Input.GetAxis("Horizontal") > 0)
         {
             print("Droite");
@@ -36,10 +38,10 @@ public class PlayerMovement : MonoBehaviour
             gameObject.transform.localScale.Set(-1, 1, 1);
         }
 
+        //une fois les valeurs récupérés on crée une velocité avec qu'on applique au player 
         velocity = new Vector2( (float)(Input.GetAxis("Horizontal") * 2f) , (float)(Input.GetAxis("Vertical") * 2f));
 
         rb.velocity = velocity;
-        print(velocity);
 
     }
 }

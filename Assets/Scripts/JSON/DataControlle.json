@@ -1,0 +1,70 @@
+{
+    "Mapping": [
+        {
+            "nomControlle": "MoveUP",
+            "keyCode": 122 // z
+        },
+        {
+            "nomControlle": "MoveDown",
+            "keyCode": 113 // S
+        },
+        {
+            "nomControlle": "MoveRight",
+            "keyCode": 100 // Q
+        },
+        {
+            "nomControlle": "MoveLeft",
+            "keyCode": 115 // D
+        },
+        {
+            "nomControlle": "RotateRight",
+            "keyCode": 97 // E
+        },
+        {
+            "nomControlle": "RotateLeft",
+            "keyCode": 101 // A
+        },
+        {
+            "nomControlle": "TorchUp",
+            "keyCode": 273 // ArrowDown
+        },
+        {
+            "nomControlle": "TorchDown",
+            "keyCode": 274 //ArrowUp
+        },
+        {
+            "nomControlle": "ArmUp",
+            "keyCode": 273 // ArrowUp
+        },
+        {
+            "nomControlle": "ArmDown",
+            "keyCode": 274 // ArrowDown
+        },
+        {
+            "nomControlle": "ArmRight",
+            "keyCode": 275 // ArrowRight
+        },
+        {
+            "nomControlle": "ArmLeft",
+            "keyCode": 276 // ArrowLeft
+        },
+        {
+            "nomControlle": "ArmOut",
+            "keyCode": 257 // Keypad1
+        },
+        {
+            "nomControlle": "ArmIn",
+            "keyCode": 258 // Keypad2
+        },
+        {
+            "nomControlle": "Sonar",
+            "keyCode": 9 // Tab
+        }
+
+    ]
+
+
+
+
+
+}

@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector2 velocity;
 
+
+
     private Rigidbody2D rb;
 
 
@@ -45,9 +47,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //une fois les valeurs récupérés on crée une velocité avec qu'on applique au player 
+
+
         velocity = new Vector2( (float)(Input.GetAxis("Horizontal") * 7f) , (float)(Input.GetAxis("Vertical") * 7f));
 
-        rb.velocity = velocity ;
+         rb.velocity = velocity ;
 
     }
 }

@@ -1,67 +1,80 @@
-{
-    "Mapping": [
-        {
+{        {
             "nomControlle": "MoveUP",
-            "keyCode": 122 // z
+            "keyCode": 122
+                // z
         },
         {
             "nomControlle": "MoveDown",
-            "keyCode": 113 // S
+            "keyCode": 113 
+                // S
         },
         {
             "nomControlle": "MoveRight",
-            "keyCode": 100 // Q
+            "keyCode": 100
+                // Q
         },
         {
             "nomControlle": "MoveLeft",
-            "keyCode": 115 // D
+            "keyCode": 115 
+                // D
         },
         {
             "nomControlle": "RotateRight",
-            "keyCode": 97 // E
+            "keyCode": 97 
+                // E
         },
         {
             "nomControlle": "RotateLeft",
-            "keyCode": 101 // A
+            "keyCode": 101 
+                // A
         },
         {
             "nomControlle": "TorchUp",
-            "keyCode": 273 // ArrowDown
+            "keyCode": 273
+                // ArrowDown
         },
         {
             "nomControlle": "TorchDown",
-            "keyCode": 274 //ArrowUp
+            "keyCode": 274 
+                //ArrowUp
         },
         {
             "nomControlle": "ArmUp",
-            "keyCode": 273 // ArrowUp
+            "keyCode": 273 
+                // ArrowUp
         },
         {
             "nomControlle": "ArmDown",
-            "keyCode": 274 // ArrowDown
+            "keyCode": 274 
+                // ArrowDown
         },
         {
             "nomControlle": "ArmRight",
-            "keyCode": 275 // ArrowRight
+            "keyCode": 275 
+                // ArrowRight
         },
         {
             "nomControlle": "ArmLeft",
-            "keyCode": 276 // ArrowLeft
+            "keyCode": 276 
+                // ArrowLeft
         },
         {
             "nomControlle": "ArmOut",
-            "keyCode": 257 // Keypad1
+            "keyCode": 257 
+                // Keypad1
         },
         {
             "nomControlle": "ArmIn",
-            "keyCode": 258 // Keypad2
+            "keyCode": 258 
+                // Keypad2
         },
         {
             "nomControlle": "Sonar",
-            "keyCode": 9 // Tab
+            "keyCode": 9 
+                // Tab
         }
 
-    ]
+    
 
 
 

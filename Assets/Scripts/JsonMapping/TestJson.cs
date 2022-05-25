@@ -2,21 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-
+using System.Linq;
 public class TestJson : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        ControllerData controllerData = new ControllerData();
-        controllerData.nomControlle = "Gauche";
-        controllerData.keyCode = KeyCode.A;
+   
+        List<ControllerData> Mapping = FileHandler.ReadListFromJSON<ControllerData>(Application.dataPath + "/Scripts/JSON/DataControlle.json");
 
-        string json = JsonUtility.ToJson(controllerData);
+        Debug.Log(Mapping.Count);
 
-        Debug.Log(json);
-
-        File.WriteAllText(Application.dataPath + "/Scripts/JSON/DataControlle.json", json);
     }
 
 

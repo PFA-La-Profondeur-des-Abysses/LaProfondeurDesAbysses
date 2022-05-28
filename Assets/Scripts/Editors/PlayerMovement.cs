@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,13 +13,26 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector2 velocity;
 
+
+
     private Rigidbody2D rb;
+
+    [Header("Gestion Controlle Mapping ")]
+    [Space]
+
+    public string chemin; 
+
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>() as Rigidbody2D;
+
+
+
+
     }
 
     // Update is called once per frame
@@ -45,9 +59,21 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //une fois les valeurs récupérés on crée une velocité avec qu'on applique au player 
+
+
         velocity = new Vector2( (float)(Input.GetAxis("Horizontal") * 7f) , (float)(Input.GetAxis("Vertical") * 7f));
 
         rb.velocity = velocity ;
 
     }
+
+
+    [Serializable]
+    public class ControlleMapping
+    {
+        public string nomControlle;
+        public KeyCode keyCode;
+    }
 }
+
+

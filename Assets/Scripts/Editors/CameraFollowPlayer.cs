@@ -16,6 +16,16 @@ public class CameraFollowPlayer : MonoBehaviour
     }
 
     // Update is called once per frame
+
+    /* 
+     * Si la caméra possède une Target
+     * On récupère la positon de la target par rapport à la camera (WorldToViewportPoint)
+     * Ensuite on calcule un delta qui est la position de la target moin la position de la camera (dans le monde).
+     * On calcule ensuite la destionation de la caméra
+     * Et on utilise la fonction SmoothDamp pour smooth le deplacement de la caméra jusqu'à sa destination 
+     * 
+     * 
+     */
     void Update()
     {
         if (target)

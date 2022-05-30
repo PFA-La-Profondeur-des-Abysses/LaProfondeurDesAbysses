@@ -21,6 +21,8 @@ public class Sonar : MonoBehaviour
      */
     void Update()
     {
+        if (Time.timeScale == 0) return;
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
             if(!scan.gameObject.activeSelf)

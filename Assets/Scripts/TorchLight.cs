@@ -15,6 +15,8 @@ public class TorchLight : MonoBehaviour
     
     void FixedUpdate()
     {
+        if (Time.timeScale == 0) return;
+
         if(mouse)
             MouseLight(); //lance la fonction gérant le mouvement de la lampe avec la souris
         else

@@ -9,15 +9,12 @@ public class BeaconManager : MonoBehaviour
     
     [SerializeField] private GameObject beaconOrigin;
     [SerializeField] private Transform beacons;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+
     void Update()
     {
+        if (Time.timeScale == 0) return;
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (floor)
@@ -57,5 +54,6 @@ public class BeaconManager : MonoBehaviour
         beacon.SetActive(true);
         beacon.transform.position = beaconOrigin.transform.position;
             //set la position de la balise directement devant le joueur (elle tombe ensuite d'elle même au sol)
+        if(beacons.childCount > 10) Destroy(beacons.GetChild(0).gameObject);
     }
 }

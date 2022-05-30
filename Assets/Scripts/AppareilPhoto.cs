@@ -87,6 +87,7 @@ public class AppareilPhoto : MonoBehaviour
     {
         rapport.transform.GetChild(0).gameObject.SetActive(true);
         rapport.OpenCurrentPage();
+        rapport.FillPage();
         picture.gameObject.SetActive(false);
     }
 }

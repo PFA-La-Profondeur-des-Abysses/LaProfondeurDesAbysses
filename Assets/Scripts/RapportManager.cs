@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,10 @@ public class RapportManager : MonoBehaviour
     [SerializeField] private int nbPages;
     [SerializeField] private int currentPage;
 
+    [Header("Visuals")]
+    [SerializeField] private Sprite pageNotSelectedImage;
+    [SerializeField] private Sprite pageSelectedImage;
+
     void Start()
     {
         var child = transform.GetChild(0);
@@ -23,6 +28,7 @@ public class RapportManager : MonoBehaviour
         {
             var newPage = Instantiate(child.GetChild(0).gameObject, child);
             pages.Add(newPage);
+            newPage.SetActive(false);
         }
         
         var tabsParent = child.GetChild(1);
@@ -36,7 +42,7 @@ public class RapportManager : MonoBehaviour
             tabs.Add(newTab);
         }
         tabsParent.GetChild(2).SetSiblingIndex(tabsParent.childCount - 1);
-        tab1.GetComponent<Image>().color = Color.grey;
+        tab1.GetComponent<Image>().sprite = pageSelectedImage;
     }
     
     void Update()
@@ -66,9 +72,8 @@ public class RapportManager : MonoBehaviour
         }
         foreach (var tab in tabs)
         {
-            tab.GetComponent<Image>().color = tab == tabs[currentPage] ? Color.grey : Color.white;
+            tab.GetComponent<Image>().sprite = tab == tabs[currentPage] ? pageSelectedImage : pageNotSelectedImage;
         }
-        tabs[currentPage].GetComponent<Image>().color = Color.grey;
     }
 
     public void CloseCurrentPage()
@@ -85,5 +90,18 @@ public class RapportManager : MonoBehaviour
     {
         var images = pages[currentPage].transform.GetComponentsInChildren<Image>();
         return images.FirstOrDefault(image => image.name == "Photo");
+    }
+
+    public void FillPage()
+    {
+        var pageTransform = pages[currentPage].transform;
+        var fill = pageTransform.Find("Photo").GetComponent<Image>().sprite ||
+                   pageTransform.Find("Name").GetComponent<TMP_InputField>().text != "";
+        tabs[currentPage].transform.GetChild(0).gameObject.SetActive(!fill);
+    }
+
+    public void OnChangeNameValue()
+    {
+        FillPage();
     }
 }

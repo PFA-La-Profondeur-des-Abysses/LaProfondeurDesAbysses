@@ -9,8 +9,13 @@ public class AppareilPhoto : MonoBehaviour
     [SerializeField] private KeyCode startPhotoModeKey; //Touche qui sera utilisée pour lancer le mode photo
     [SerializeField] private KeyCode takePictureKey; //Touche qui sera utilisée pour prendre une photo
     private Camera cam; //variable stockant la caméra qui permettra à faire le screen
+    [SerializeField] private Image rapportImage;
+    [SerializeField] private GameObject panel;
+    [SerializeField] private RapportManager rapport;
 
     public Image picture;
+
+    private bool modeOn;
 
     void Awake()
     {
@@ -21,19 +26,31 @@ public class AppareilPhoto : MonoBehaviour
     {
         Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(position.x, position.y, 0);
-        
-        if(Input.GetKeyDown(startPhotoModeKey))
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            bool modeOn = !cam.gameObject.activeSelf;
+            
+        }
+        
+        /*if(Input.GetKeyDown(startPhotoModeKey))
+        {
+            modeOn = !cam.gameObject.activeSelf;
             Time.timeScale = modeOn ? 0 : 1;
             cam.gameObject.SetActive(modeOn);
-        }
+        }*/
         
         if (Input.GetKeyDown(takePictureKey) && cam.gameObject.activeSelf)
         {
             cam.targetTexture = RenderTexture.GetTemporary(400, 400, 16);
             StartCoroutine(TakeScreenshot());
         }
+    }
+
+    public void onClick()
+    {
+        modeOn = true;
+        cam.gameObject.SetActive(modeOn);
+        rapport.CloseCurrentPage();
     }
 
     private IEnumerator TakeScreenshot()
@@ -49,20 +66,27 @@ public class AppareilPhoto : MonoBehaviour
         renderResult.ReadPixels(rect, 0, 0);
 
         byte[] byteArray = renderResult.EncodeToPNG();
-        System.IO.File.WriteAllBytes(Application.dataPath + "/test.png", byteArray);
+        File.WriteAllBytes(Application.dataPath + "/test.png", byteArray);
 
         RenderTexture.ReleaseTemporary(renderTexture);
         cam.targetTexture = null;
 
         Texture2D texture = new Texture2D(400, 400);
         bool isLoaded = texture.LoadImage(byteArray);
-        if(isLoaded) picture.sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+        if(isLoaded)
+        {
+            Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+            picture.sprite = sprite;
+            rapport.GetCurrentPageImage().sprite = sprite;
+        }
         cam.gameObject.SetActive(false);
         GetComponent<Animator>().SetTrigger("TakePicture");
     }
 
     private void ReturnToNormalMode()
     {
-        Time.timeScale = 1;
+        rapport.transform.GetChild(0).gameObject.SetActive(true);
+        rapport.OpenCurrentPage();
+        picture.gameObject.SetActive(false);
     }
 }

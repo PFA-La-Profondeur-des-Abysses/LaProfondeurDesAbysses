@@ -48,7 +48,7 @@ public class TorchLight : MonoBehaviour
             //quand les touches n'est pas relachée, baisse graduellement la valeur d'axis (simule un inertie)
         angle = Mathf.Clamp(angle + axis, -30f, 30f);
         rotation = new Vector3(rotation.x, rotation.y, angle);
-        transform.rotation = Quaternion.Euler(rotation);
+        transform.localRotation = Quaternion.Euler(rotation);
             //calcule la valeur de l'angle duquel la lampe doit bouger
     }
 }

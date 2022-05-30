@@ -9,7 +9,7 @@ public class SonarWave : MonoBehaviour
     {
         if(other.CompareTag("Interest"))
         {
-            transform.parent.GetComponent<Sonar>().DetectObject(other.transform.position);
+            StartCoroutine(transform.parent.GetComponent<Sonar>().DetectObject(other.transform.position));
         }
     }
 }

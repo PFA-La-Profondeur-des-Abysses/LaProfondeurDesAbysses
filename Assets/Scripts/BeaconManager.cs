@@ -36,15 +36,15 @@ public class BeaconManager : MonoBehaviour
      */
     private void SetBeaconOnFloor()
     {
-        Debug.Log(LayerMask.LayerToName(LayerMask.NameToLayer("Floor")));
         RaycastHit2D cast = Physics2D.Raycast(transform.position, Vector2.down,
             10, LayerMask.GetMask("Floor"));
         if (cast.collider == null) return;
-        Debug.Log("floor");
-        Debug.Log(cast.collider.name);
+            //vérifie si le joueur est assez près du sol
         GameObject beacon = Instantiate(beaconOrigin, beacons);
+            //Instantie une balise
         beacon.SetActive(true);
         beacon.transform.position = cast.point;
+            //set la position de la balise sur le sol le plus proche directement en dessous
     }   
     
     /*
@@ -53,7 +53,9 @@ public class BeaconManager : MonoBehaviour
     private void SetBeaconInTheAir()
     {
         GameObject beacon = Instantiate(beaconOrigin, beacons);
+            //Instantie une balise
         beacon.SetActive(true);
         beacon.transform.position = beaconOrigin.transform.position;
+            //set la position de la balise directement devant le joueur (elle tombe ensuite d'elle même au sol)
     }
 }

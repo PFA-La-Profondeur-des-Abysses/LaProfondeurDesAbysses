@@ -24,8 +24,8 @@ public class Sonar : MonoBehaviour
         {
             if(!scan.gameObject.activeSelf)
             {
-                StartCoroutine(Scan());
                 DeactivateSpotter();
+                StartCoroutine(Scan());
             }
         }
 
@@ -58,7 +58,7 @@ public class Sonar : MonoBehaviour
             scanningTime = 1.5f;
             yield return null;
         }
-        ActivateSpotter();
+        StartCoroutine(ActivateSpotter());
         scan.gameObject.SetActive(false);
     }
     
@@ -66,22 +66,46 @@ public class Sonar : MonoBehaviour
      * Lorsque l'objet du scan détecte un objet, il lance cette fonction
      * La fonction active le cercle du sonnar, puis affiche l'objet détecté par une lumière
      */
-    public void DetectObject(Vector3 objectPosition)
+    public IEnumerator DetectObject(Vector3 objectPosition)
     {
-        ActivateSpotter();
+        StartCoroutine(ActivateSpotter());
         GameObject newLight = Instantiate(light.gameObject, spotter);
         newLight.SetActive(true);
         newLight.transform.right = objectPosition - transform.position;
         lights.Add(newLight);
+        float t = 0;
+        while (t < 1f)
+        {
+            Debug.Log(t);
+            float coordinate = t * 4f;
+            Debug.Log(coordinate);
+            newLight.transform.GetChild(0).localPosition = new Vector3(coordinate, 0, 0);
+            t += Time.deltaTime;
+            scanningTime = 1.5f;
+            yield return null;
+        }
+        light.GetChild(0).localPosition = new Vector3(4, 0, 0);
     }
 
     /*
      * Fonction qui permet d'activer le cercle du sonnar
      */
-    private void ActivateSpotter()
+    private IEnumerator ActivateSpotter()
     {
-        spotter.gameObject.SetActive(true);
-        scanningTime = 1.5f;
+        if(!spotter.gameObject.activeSelf)
+        {
+            spotter.gameObject.SetActive(true);
+            spotter.localScale = Vector3.zero;
+            float t = 0;
+            while (t < 0.75f)
+            {
+                float coordinate = t * 2f;
+                spotter.localScale = new Vector3(coordinate, coordinate, 1);
+                t += Time.deltaTime;
+                scanningTime = 1.5f;
+                yield return null;
+            }
+        }
     }
 
     /*

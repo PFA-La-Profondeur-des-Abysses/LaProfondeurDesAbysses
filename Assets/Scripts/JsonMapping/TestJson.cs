@@ -3,24 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System;
+using UnityEngine.InputSystem;
+
 public class TestJson : MonoBehaviour
 {
+    public TextAsset json;
+    public MappingList mappingList = new MappingList();
+
     // Start is called before the first frame update
     void Start()
     {
-   
-        List<ControllerData> Mapping = FileHandler.ReadListFromJSON<ControllerData>(Application.dataPath + "/Scripts/JSON/DataControlle.json");
 
-        Debug.Log(Mapping.Count);
+        mappingList = JsonUtility.FromJson<MappingList>(json.text);// Application.dataPath + "/Scripts/JSON/DataControlle.json");
 
     }
 
 
 
-
-    private class ControllerData
+    [Serializable]
+    public class Mapping
     {
         public string nomControlle;
         public KeyCode keyCode;
     }
+
+
+    [Serializable]
+    public class MappingList
+    {
+        public Mapping[] mapping;
+        
+    }
+
+
 }

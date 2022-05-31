@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9591c2dfb86a71d46b43a4b0a69de4f7
+guid: b07445208e7f97b4aae1b7002447d2ff
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -42,12 +42,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 500
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -102,7 +102,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Jessica_ConceptProd_ConceptBackground_AnemoneRouge3_0
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 29
+        width: 326
+        height: 282
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4925c9f9102a3264fbb0ac0c1629447b
+      internalID: -218470521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -113,7 +134,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Jessica_ConceptProd_ConceptBackground_AnemoneRouge3_2: -396805971
+      Jessica_ConceptProd_ConceptBackground_AnemoneRouge3_1: -1942243018
+      Jessica_ConceptProd_ConceptBackground_AnemoneRouge3_0: -218470521
+      Jessica_ConceptProd_ConceptBackground_AnemoneRouge3_3: 1842666861
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

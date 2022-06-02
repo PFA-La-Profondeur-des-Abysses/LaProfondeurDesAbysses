@@ -37,8 +37,8 @@ public class InputManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        InputManager.CreateInputConfiguration("Keyboard");
-       InputManager.CreateDigitalAxis("Keyboard","Horizontal", KeyCode.Z, KeyCode.S, -3.00f, -3.00f);
+        //InputManager.CreateInputConfiguration("Keyboard");
+      // InputManager.CreateDigitalAxis("Keyboard","Horizontal", KeyCode.Z, KeyCode.S, -3.00f, -3.00f);
 
 
     }

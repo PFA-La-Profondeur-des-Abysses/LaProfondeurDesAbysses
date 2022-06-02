@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TorchLight : MonoBehaviour
 {
-
+    public KeyCode torchekey;
+    public GameObject torche;
     public bool mouse = true; //variable permettant de savoir si le gestion de la lampe doit être faite au clavier ou à la souris
     public float speed; //vitesse de mouvement de la lampe
     public float angle; 
@@ -12,9 +13,17 @@ public class TorchLight : MonoBehaviour
 
     private Vector3 rotation;
 
+    void Update()
+    {
+        if(Input.GetKeyDown(torchekey)) torche.SetActive(!torche.activeSelf);
+    }
     
     void FixedUpdate()
     {
+        if (Time.timeScale == 0) return;
+        
+        if(!torche.activeSelf) return;
+        
         if(mouse)
             MouseLight(); //lance la fonction gérant le mouvement de la lampe avec la souris
         else
@@ -48,7 +57,7 @@ public class TorchLight : MonoBehaviour
             //quand les touches n'est pas relachée, baisse graduellement la valeur d'axis (simule un inertie)
         angle = Mathf.Clamp(angle + axis, -30f, 30f);
         rotation = new Vector3(rotation.x, rotation.y, angle);
-        transform.rotation = Quaternion.Euler(rotation);
+        transform.localRotation = Quaternion.Euler(rotation);
             //calcule la valeur de l'angle duquel la lampe doit bouger
     }
 }

@@ -130,9 +130,8 @@ public class PlayerMovement : MonoBehaviour
         if (movementDirection != Vector2.zero)
         {
             /*
-             * On check si on se deplace sur la gauche ou la droite, 
-             * selon le coté on va clamp la valeur de l'angle sur Y et on va rotate le pivotRotation du player pour adapter la direction de regard du player 
-             * 
+             * Clamp la rotation à gauche : de -40 à -140
+             * Clamp la rotation à droite : de 40 à 140
              * 
              */
 
@@ -153,7 +152,9 @@ public class PlayerMovement : MonoBehaviour
 
             // Code effecuant la rotation en fonction de la direction où le player regarde.
             Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, movementDirection);
-            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, toRoration, rotationSpeed * Time.deltaTime); //-40,-140 -> plage de valeur si on veut clamp.
+            Debug.Log(toRoration);
+
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRoration, rotationSpeed * Time.deltaTime); //-40,-140 -> plage de valeur si on veut clamp.
 
             
 

@@ -11,7 +11,11 @@ public class PlayerMovement : MonoBehaviour
 
     public float speed = 7f;
 
+    public float rotationSpeed = 2f;
+
     public Vector2 velocity;
+
+    public GameObject pivotRotation;
 
 
 
@@ -67,38 +71,27 @@ public class PlayerMovement : MonoBehaviour
         //on check si les controles pour le deplacement sur l'axe horizontal sont pressés
         //On regarde ensuite la valeur : > 0 = on se déplace vers la droite
         //                               < 0 = on se déplace vers la gauche
-
+        /*
         _moveInput = playerControls.Player.Movement_Player.ReadValue<Vector2>();
 
 
-        if (_moveInput.x > 0)
-        {
-            if (gameObject.transform.rotation.y != 0)
-            {
-                gameObject.transform.DORotate(new Vector2(0, 0), 0.5f);
-            }
+        velocity = new Vector2((float)_moveInput.x, (float)_moveInput.y);
+
+        float inputMagnitude = Mathf.Clamp01(velocity.magnitude);
+
+        velocity.Normalize();
+
+        rb.velocity = velocity * speed * Time.deltaTime;
+
+
+        if(velocity != Vector2.zero)
+        {                
+            Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, velocity);
 
         }
+        */
 
-        if (_moveInput.x < 0)
-        {
-            if (gameObject.transform.rotation.y != 180)
-            {
-                gameObject.transform.DORotate(new Vector2(0, 180), 0.5f);
-            }
-        }
-
-        speed = 1f;
-        velocity = new Vector2((float)_moveInput.x * speed, (float)_moveInput.y * speed) ;
-
-        rb.velocity = velocity;
-
-        
-
-        print(transform.forward);
-
-        transform.LookAt(new Vector2(transform.position.x + velocity.x, transform.position.y + velocity.y));
-
+        MovementAndRotation();
 
     }
 
@@ -119,9 +112,53 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    public void OnMovement_player()
+
+    public void MovementAndRotation()
     {
-        //Mouvement_Player;
+        _moveInput = playerControls.Player.Movement_Player.ReadValue<Vector2>();
+
+
+        Vector2 movementDirection = new Vector2((float)_moveInput.x, (float)_moveInput.y);
+
+        float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
+
+        movementDirection.Normalize();
+
+        rb.velocity = movementDirection * speed * Time.deltaTime;
+
+
+        if (movementDirection != Vector2.zero)
+        {
+            /*
+             * On check si on se deplace sur la gauche ou la droite, 
+             * selon le coté on va clamp la valeur de l'angle sur Y et on va rotate le pivotRotation du player pour adapter la direction de regard du player 
+             * 
+             * 
+             */
+
+            if(_moveInput.x != 0)
+            {
+                if(_moveInput.x < 0) // gauche
+                {
+
+                }
+
+                if(_moveInput.x > 0) // droite 
+                {
+
+                }
+            }
+
+
+
+            // Code effecuant la rotation en fonction de la direction où le player regarde.
+            Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, movementDirection);
+            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, toRoration, rotationSpeed * Time.deltaTime); //-40,-140 -> plage de valeur si on veut clamp.
+
+            
+
+        }
+
     }
 }
 

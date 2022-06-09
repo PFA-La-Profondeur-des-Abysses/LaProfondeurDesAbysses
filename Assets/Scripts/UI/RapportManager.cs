@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +20,11 @@ public class RapportManager : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private Sprite pageNotSelectedImage; // sprite de l'onglet non sélectionné
     [SerializeField] private Sprite pageSelectedImage; // sprite de l'onglet sélectionné
+
+    void Awake()
+    {
+        
+    }
 
     /*
      * Au start, créé le nombre de pages correspondant à la valeur de nbPages
@@ -46,6 +53,23 @@ public class RapportManager : MonoBehaviour
         }
         tabsParent.GetChild(2).SetSiblingIndex(tabsParent.childCount - 1);
         tab1.GetComponent<Image>().sprite = pageSelectedImage;
+        
+        /*Dictionary<FishNames, Fish> dico = new Dictionary<FishNames, Fish>
+        {
+            { FishNames.DosBleu, new Fish("DosBleu", false, false, false) },
+            { FishNames.Sardine, new Fish("Sardine", false, false, false) },
+            { FishNames.Poisson, new Fish("Poisson", false, false, false) },
+            { FishNames.Requin, new Fish("Requin", false, false, false) }
+        };
+        
+        string path = Application.persistentDataPath + "/fishStructure.json";
+        File.WriteAllText(path, JsonConvert.SerializeObject(dico));
+        Debug.Log("chargé" + path);
+        var dico1 = JsonConvert.DeserializeObject<Dictionary<FishNames, Fish>>(File.ReadAllText(path));
+        Debug.Log(dico1);
+        Debug.Log(dico1?.Keys);
+        Debug.Log(dico1?[FishNames.DosBleu]);
+        Debug.Log(dico1?[FishNames.DosBleu].name);*/
     }
     
     /*

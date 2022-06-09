@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -98,6 +99,16 @@ public class AppareilPhoto : MonoBehaviour
         if(isLoaded)
         {
             Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+            //picture.sprite = sprite;
+            //rapport.GetCurrentPageImage().sprite = sprite;
+            string path = Application.persistentDataPath + "/fishStructure.json";
+            File.WriteAllText(path, JsonConvert.SerializeObject(new Page("DosBleu", 
+                FeedingRegime.Inconnu, "", sprite)));
+
+            string str = File.ReadAllText(path);
+            Page page = JsonConvert.DeserializeObject<Page>(str);
+            sprite = page.picture;
+            yield return null;
             picture.sprite = sprite;
             rapport.GetCurrentPageImage().sprite = sprite;
         }

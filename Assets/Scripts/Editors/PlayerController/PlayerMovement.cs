@@ -17,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject pivotRotation;
 
-
+    float angleRotationZ;
+    float angleRotationY;
 
     private Rigidbody2D rb;
 
@@ -115,8 +116,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovementAndRotation()
     {
+        /*
+         * Mouvement
+         */
         _moveInput = playerControls.Player.Movement_Player.ReadValue<Vector2>();
-
 
         Vector2 movementDirection = new Vector2((float)_moveInput.x, (float)_moveInput.y);
 
@@ -126,37 +129,114 @@ public class PlayerMovement : MonoBehaviour
 
         rb.velocity = movementDirection * speed * Time.deltaTime;
 
-
+        /*
+        * Rotation
+        */
         if (movementDirection != Vector2.zero)
         {
+            bool canTurnRight = false;
+            bool canTurnLeft = true;
+
             /*
              * Clamp la rotation à gauche : de -40 à -140
              * Clamp la rotation à droite : de 40 à 140
              * 
+             * Faire la rota visuelle sur Y
              */
 
-            if(_moveInput.x != 0)
+            /*
+             * Rotation Gauche et droite
+            */
+            /*
+            if(_moveInput.x < 0) // left gauche
             {
-                if(_moveInput.x < 0) // gauche
+                if(canTurnLeft)
                 {
 
-                }
+                    if (transform.rotation.y == 180)
+                    {
 
-                if(_moveInput.x > 0) // droite 
-                {
+                        angleRotationY = Mathf.Clamp((_moveInput.x * 180 / 8) / rotationSpeed + angleRotationY, -180f, 0f);
 
+                        Vector3 rotationYTo = new Vector3(transform.rotation.x, angleRotationY, transform.rotation.z );
+
+                        transform.localRotation = Quaternion.Euler(rotationYTo);
+
+                        canTurnLeft = false;
+                        canTurnRight = true;
+                    }
+                    
                 }
             }
 
+            if(_moveInput.x > 0) // right droite 
+            {
+                if (canTurnRight)
+                {
 
 
-            // Code effecuant la rotation en fonction de la direction où le player regarde.
-            Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, movementDirection);
-            Debug.Log(toRoration);
+                    if (transform.rotation.y == 0)
+                    {
+                        angleRotationY = Mathf.Clamp((_moveInput.x * 180 / 8) / rotationSpeed + angleRotationY, -180, 0);
 
-            //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRoration, rotationSpeed * Time.deltaTime); //-40,-140 -> plage de valeur si on veut clamp.
+                        Vector3 rotationYTo = new Vector3(transform.rotation.x, angleRotationY, transform.rotation.z);
 
+                        transform.localRotation = Quaternion.Euler(rotationYTo);
+
+                        canTurnLeft = true;
+                        canTurnRight = false;
+                    }
+
+                }
+            }
             
+
+
+
+            if (_moveInput.y != 0 && _moveInput.x > 0)
+            {
+                angleRotationZ = Mathf.Clamp((_moveInput.y*180/8) / rotationSpeed + angleRotationZ, -140f, -40f);
+
+                Vector3 rotationTo = new Vector3(transform.rotation.x, transform.rotation.y, angleRotationZ);
+
+                transform.localRotation = Quaternion.Euler(rotationTo);
+            }
+
+            if (_moveInput.y != 0 && _moveInput.x < 0)
+            {
+                angleRotationZ = Mathf.Clamp((_moveInput.y * 180 / 8) / rotationSpeed + angleRotationZ, -140f, -40f);
+
+                Vector3 rotationTo = new Vector3(transform.rotation.x, transform.rotation.y, angleRotationZ);
+
+                transform.localRotation = Quaternion.Euler(rotationTo);
+            }
+            */
+
+            /*
+            * ancien code 
+            * 
+            */
+
+
+            Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, movementDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRoration, rotationSpeed * Time.deltaTime); //-40,-140 -> plage de valeur si on veut clamp.
+            /*
+            if (transform.rotation.z < 0f && transform.rotation.z > -180f)
+            {
+                Vector3 rotationTo = new Vector3(0, transform.rotation.y, transform.rotation.z);
+
+                transform.localRotation = Quaternion.Euler(rotationTo);
+            }
+
+            else
+            {
+
+
+                Vector3 rotationTo = new Vector3(180, transform.rotation.y, transform.rotation.z);
+
+                transform.localRotation = Quaternion.Euler(rotationTo);
+            }
+            */
 
         }
 

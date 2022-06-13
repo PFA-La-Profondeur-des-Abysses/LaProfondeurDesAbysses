@@ -12,6 +12,7 @@ public class DosBleu : MonoBehaviour
     public Vector3 botRightPos;
     public float speed;
     private Transform food;
+    private bool foodDetected;
     private bool eating;
 
     private Vector3 destination;
@@ -28,42 +29,13 @@ public class DosBleu : MonoBehaviour
         StartCoroutine(DetectFood());
     }
 
-    private IEnumerator DetectFood()
-    {
-        var particles = Physics2D.OverlapCircleAll(transform.position, 50);
-        Debug.Log(particles.Length);
-        
-        if(particles.Length > 0)
-        {
-            food = particles[0].transform;
-            foreach (var particle in particles.Where(particle =>
-                particle.CompareTag("Food") &&
-                Vector2.Distance(transform.position, particle.transform.position) <
-                Vector2.Distance(transform.position, food.position)))
-            {
-                Debug.Log("particule spot");
-                food = particle.transform;
-            }
-
-            foreach (var particle in particles)
-            {
-                Debug.Log(particle.tag);
-            }
-
-            destination = food.position;
-            //Debug.Log(destination);
-        }
-        
-        yield return new WaitForSeconds(1);
-        StartCoroutine(DetectFood());
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (fish.position == destination)
         {
-            destination = new Vector3(Random.Range(topLeftPos.x, botRightPos.x),
+            if (eating) StartCoroutine(Eat());
+            else destination = new Vector3(Random.Range(topLeftPos.x, botRightPos.x),
                 Random.Range(botRightPos.y, topLeftPos.y), 0);
         }
         else
@@ -81,26 +53,52 @@ public class DosBleu : MonoBehaviour
         }
     }
 
-    /*public void SpotFood(List<ParticleSystem.Particle> particles)
+    private IEnumerator DetectFood()
     {
-        food = particles[0];
-        foreach (var particle in particles.Where(particle => 
-            Vector2.Distance(transform.position, particle.position) <
-            Vector2.Distance(transform.position, food.position)))
+        var particles = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Food"));
+        
+        if(particles.Length > 0)
         {
-            food = particle;
+            Debug.Log(particles.Length);
+            food = particles[0].transform;
+            foreach (var particle in particles.Where(particle =>
+                Vector2.Distance(transform.position, particle.transform.position) <
+                Vector2.Distance(transform.position, food.position)))
+            {
+                Debug.Log("bouffe");
+                food = particle.transform;
+            }
+
+            foreach (var particle in particles)
+            {
+            }
+
+            destination = food.position;
+            eating = true;
         }
-        destination = food.position;
+        else eating = false;
+
+        yield return new WaitForSeconds(1);
+        StartCoroutine(DetectFood());
     }
 
-    public void LoseFood(List<ParticleSystem.Particle> particles)
+    private IEnumerator Eat()
     {
-        foreach (var particle in particles.Where(particle => 
-            particle.position == food.position &&
-            Math.Abs(particle.rotation - food.rotation) < 0.01))
+        StopCoroutine(DetectFood());
+        
+        float eatingTime = 1;
+        while (eatingTime > 0 && food)
         {
-            food = particle;
-            destination = food.position;
+            eatingTime -= Time.deltaTime;
+            yield return null;
         }
-    }*/
+        
+        if(food) Destroy(food.gameObject);
+        eating = false;
+
+        yield return null;
+        
+        StartCoroutine(DetectFood());
+        destination = transform.position;
+    }
 }

@@ -13,7 +13,7 @@ public class SonarWave : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Interest"))
+        if(other.CompareTag("Interest") || other.CompareTag("Fish"))
         {
             StartCoroutine(sonar.DetectObject(other.transform));
         }

@@ -121,6 +121,7 @@ public class RapportManager : MonoBehaviour
      */
     public void CloseCurrentPage()
     {
+        Time.timeScale = 1;
         transform.GetChild(0).gameObject.SetActive(false);
     }
 
@@ -129,6 +130,7 @@ public class RapportManager : MonoBehaviour
      */
     public void OpenCurrentPage()
     {
+        Time.timeScale = 0;
         transform.GetChild(0).gameObject.SetActive(true);
     }
 

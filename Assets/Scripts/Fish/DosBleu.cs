@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,6 +15,7 @@ public class DosBleu : MonoBehaviour
     private Transform food;
     private bool foodDetected;
     private bool eating;
+    public FeedingRegime regime;
 
     private Vector3 destination;
 
@@ -59,26 +61,26 @@ public class DosBleu : MonoBehaviour
         
         if(particles.Length > 0)
         {
-            Debug.Log(particles.Length);
-            food = particles[0].transform;
+            var foundFood = false;
+            food = particles[particles.Length - 1].transform;
             foreach (var particle in particles.Where(particle =>
-                Vector2.Distance(transform.position, particle.transform.position) <
+                (regime == FeedingRegime.Omnivore || particle.gameObject.CompareTag(regime.ToString())) &&
+                Vector2.Distance(transform.position, particle.transform.position) <=
                 Vector2.Distance(transform.position, food.position)))
             {
-                Debug.Log("bouffe");
                 food = particle.transform;
+                foundFood = true;
             }
-
-            foreach (var particle in particles)
+            
+            if(foundFood)
             {
+                destination = food.position;
+                eating = true;
             }
-
-            destination = food.position;
-            eating = true;
         }
         else eating = false;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);
         StartCoroutine(DetectFood());
     }
 

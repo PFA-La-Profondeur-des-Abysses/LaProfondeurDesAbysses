@@ -18,6 +18,8 @@ public class FoodManager : MonoBehaviour
 
     #endregion
     private GameObject food;
+    private bool canThrow = true;
+    private List<GameObject> fodders;
 
     private void Start()
     {
@@ -29,11 +31,12 @@ public class FoodManager : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.G)) ChangeType();
-        if(Input.GetKeyDown(KeyCode.F)) StartCoroutine(ThrowFood());
+        if(Input.GetKeyDown(KeyCode.F) && canThrow) StartCoroutine(ThrowFood());
     }
 
     private IEnumerator ThrowFood()
     {
+        canThrow = false;
         var food = this.food;
         var foodParent = GameObject.Find("Food");
         if (!foodParent) foodParent = Instantiate(new GameObject("Food"));
@@ -51,6 +54,9 @@ public class FoodManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
+
+        yield return new WaitForSeconds(0.5f);
+        canThrow = true;
     }
 
     private IEnumerator LowerVelocity(GameObject foodObject)

@@ -64,12 +64,11 @@ public class DosBleu : MonoBehaviour
             var foundFood = false;
             food = particles[particles.Length - 1].transform;
             foreach (var particle in particles.Where(particle =>
-                (regime == FeedingRegime.Omnivore || particle.gameObject.CompareTag(regime.ToString())) &&
-                Vector2.Distance(transform.position, particle.transform.position) <=
-                Vector2.Distance(transform.position, food.position)))
+                (regime == FeedingRegime.Omnivore || particle.gameObject.CompareTag(regime.ToString()))))
             {
                 food = particle.transform;
                 foundFood = true;
+                break;
             }
             
             if(foundFood)

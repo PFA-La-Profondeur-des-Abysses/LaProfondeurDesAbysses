@@ -31,7 +31,7 @@ public class RapportManager : MonoBehaviour
      */
     void Start()
     {
-        var child = transform.GetChild(0);
+        var child = rapport.transform;
         pages.Add(child.GetChild(0).gameObject);
         
         for (var i = 0; i < nbPages - 1; i++)
@@ -122,7 +122,7 @@ public class RapportManager : MonoBehaviour
     public void CloseCurrentPage()
     {
         Time.timeScale = 1;
-        transform.GetChild(0).gameObject.SetActive(false);
+        rapport.SetActive(false);
     }
 
     /*
@@ -131,7 +131,7 @@ public class RapportManager : MonoBehaviour
     public void OpenCurrentPage()
     {
         Time.timeScale = 0;
-        transform.GetChild(0).gameObject.SetActive(true);
+        rapport.SetActive(true);
     }
 
     /*

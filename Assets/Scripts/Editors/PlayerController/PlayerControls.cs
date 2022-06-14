@@ -125,7 +125,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""ba608869-a45f-4038-8b61-b0e909158ffd"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=8,y=8)"",
+                    ""processors"": ""ScaleVector2"",
                     ""groups"": """",
                     ""action"": ""Movement_Player"",
                     ""isComposite"": true,

@@ -10,6 +10,7 @@ public class Sonar : MonoBehaviour
     public Transform scan;
     public Transform spotter;
     public Transform light;
+    public float speed;
 
     private List<GameObject> lights = new List<GameObject>();
     private float scanningTime;
@@ -59,10 +60,10 @@ public class Sonar : MonoBehaviour
         float t = 0;
         while (t < 10)
         {
-            float coordinate = t * 20;
+            float coordinate = t * speed;
             scan.localScale = new Vector3(coordinate, coordinate, 1);
             t += Time.deltaTime;
-            scanningTime = 1.5f;
+            scanningTime = 1f;
             yield return null;
         }
         StartCoroutine(ActivateSpotter());

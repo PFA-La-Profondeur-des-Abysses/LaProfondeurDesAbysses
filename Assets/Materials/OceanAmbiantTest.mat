@@ -39,7 +39,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Power: 0.3
-    - _Scale: 4.78
+    - _Scale: 5.83
     - _Speed: 0.04
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}

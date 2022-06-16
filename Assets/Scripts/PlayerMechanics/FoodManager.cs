@@ -30,8 +30,16 @@ public class FoodManager : MonoBehaviour
     
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G)) ChangeType();
-        if(Input.GetKeyDown(KeyCode.F) && canThrow) StartCoroutine(ThrowFood());
+        if(Input.GetKeyDown(KeyCode.G) && canThrow)
+        {
+            food = meat;
+            StartCoroutine(ThrowFood());
+        }
+        if(Input.GetKeyDown(KeyCode.F) && canThrow)
+        {
+            food = leaf;
+            StartCoroutine(ThrowFood());
+        }
     }
 
     private IEnumerator ThrowFood()

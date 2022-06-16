@@ -1,0 +1,39 @@
+﻿#pragma kernel CSMain
+static const int threadGroupSize = 1024;
+
+struct Fish {
+    float3 position;
+    float3 direction;
+
+    float3 flockHeading;
+    float3 flockCentre;
+    float3 separationHeading;
+    int numFlockmates;
+};
+
+RWStructuredBuffer<Fish> fish;
+int numFishs;
+float viewRadius;
+float avoidRadius;
+
+[numthreads(threadGroupSize,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    for (int indexB = 0; indexB < numFishs; indexB ++) {
+        if (id.x != indexB) {
+            Fish FishB = fish[indexB];
+            float3 offset = FishB.position - fish[id.x].position;
+            float sqrDst = offset.x * offset.x + offset.y * offset.y + offset.z * offset.z;
+
+            if (sqrDst < viewRadius * viewRadius) {
+                fish[id.x].numFlockmates += 1;
+                fish[id.x].flockHeading += FishB.direction;
+                fish[id.x].flockCentre += FishB.position;
+
+                if (sqrDst < avoidRadius * avoidRadius) {
+                    fish[id.x].separationHeading -= offset / sqrDst;
+                }
+            }
+        }
+    }
+}

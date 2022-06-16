@@ -9,10 +9,15 @@ public class IA_Fish_Vegetarien : MonoBehaviour
     //flock mate = partenaire de troupeaux;
     //Steer = diriger
 
+    [Space]
+    [Header("Fish Info :")]
+
+    public FeedingRegime regime;
+    Transform food;
+
+    [Space]
     [HideInInspector]
     public Vector3 position;
-   
-
     public Vector3 forward;
     public Vector3 right;
     public Vector3 velocity;
@@ -30,13 +35,16 @@ public class IA_Fish_Vegetarien : MonoBehaviour
     public Transform target;
     public Transform cachedTransform; // other transform used to calculate positon 
 
-
+    [Space]
+    [Header("Timer : ")]
     public float timerWaitDurationMax = 10 ;
     public float timerTargetDurationMax = 5 ;
 
     public float timerWaitUntilNextTarget ;
     public float timerTarget;
 
+    [Space]
+    [Header("Spawner Info :")]
     public GameObject spawnPointPrefab;
     public GameObject spawnPoint;
 
@@ -116,6 +124,9 @@ public class IA_Fish_Vegetarien : MonoBehaviour
 
     }
 
+    /*
+     * Fonction de deplacement  
+     */
     void Moving()
     {
         Vector3 acceleration = Vector3.zero;
@@ -125,13 +136,10 @@ public class IA_Fish_Vegetarien : MonoBehaviour
         if (target != null)
         {
             Vector3 offSetToTarget = (target.position - position);
-
             acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
         }
 
-    
-
-        //gerer le troupeaux (si il y en a 1)
+        //gerer le banc de poisson (si il y en a 1)
         if (numPerceivedFlockMates != 0)
         {
             centreOfFlockMates = position;
@@ -139,7 +147,6 @@ public class IA_Fish_Vegetarien : MonoBehaviour
             averageFlockHeading = right;
 
             centreOfFlockMates /= numPerceivedFlockMates;
-
 
             Vector3 offsetToFlockmatesCentre = (centreOfFlockMates - position);
 
@@ -152,7 +159,7 @@ public class IA_Fish_Vegetarien : MonoBehaviour
             acceleration += seperationForce;
         }
 
-        //gere la collision
+        //check si il y a une future collision et cherche une nouvelle trajectoire sans collision.
         if (isGoingToCollideSomething())
         {
             Vector3 collisionAvoidDir = ObstacleRays();
@@ -160,10 +167,9 @@ public class IA_Fish_Vegetarien : MonoBehaviour
             acceleration += collisionAvoidForce;
             
         }
-
         //setup direction, vitesse -> le deplacement
    
-
+        //Setup de la velocité, vitesse...
         velocity += new Vector3(acceleration.x * Time.deltaTime,acceleration.y * Time.deltaTime,0);
 
         float speed = velocity.magnitude;
@@ -184,7 +190,11 @@ public class IA_Fish_Vegetarien : MonoBehaviour
 
     }
 
-
+    /*
+     * Gere la rotation du sprite du poisson
+     * A REVOIR
+     * 
+     */
     public void GestionRotationFish()
     {
 
@@ -200,19 +210,23 @@ public class IA_Fish_Vegetarien : MonoBehaviour
             this.transform.localScale = new Vector3(-0.34f, -0.34f, 0.34f);
         }
     }
-    Vector3 SteerTowards(Vector3 vector3) //se diriger vers
+
+    /*
+     * Fonction permettant de definir la direction (vector3)
+     * vers laquelle le poisson va se diriger
+     * 
+     */
+    Vector3 SteerTowards(Vector3 vector3) 
     {
       
-
         Vector3 v = vector3.normalized * settings.maxSpeed - velocity;
-        //Vector3 nullZ = new Vector3(v.x, v.y, 0);
-        //v = nullZ;
-
-
         return Vector3.ClampMagnitude(v, settings.maxSteerForce);
     }
 
-
+    /*
+     * Fonction lançant un raycast devant le poisson afin de detecter une collision
+     *
+     */
     bool isGoingToCollideSomething()
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position,settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity,  Mathf.Infinity);
@@ -230,6 +244,12 @@ public class IA_Fish_Vegetarien : MonoBehaviour
         return false; // au cas où :)
     }
 
+    
+    /*
+     * Fontion permettant de trouver la première direction que le poisson peut prendre
+     * qui ne possède pas de collision à la fin
+     * 
+     */
     Vector2 ObstacleRays()
     {
         Vector2[] rayDirection = IA_FishHelper();
@@ -251,7 +271,10 @@ public class IA_Fish_Vegetarien : MonoBehaviour
     }
 
 
-
+    /*
+     * Fonction permettant de calculer les direction des différents raycast a tirer afin d'éviter une collision.
+     * 
+     */
     public Vector2[] IA_FishHelper()
     {
         const int numViewDirections = 300;
@@ -276,4 +299,45 @@ public class IA_Fish_Vegetarien : MonoBehaviour
 
         return directions;
     }
-}
+
+    public void isDetectingFood()
+    {
+        var particles = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Food"));
+        {
+            if(particles.Length > 0)
+            {
+                foreach(var particule in particles)
+                {
+                    if(particule.tag == regime.ToString())
+                    {
+                        food = particule.transform;
+                        target = food; 
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+    /*
+    private IEnumerator Eat()
+        {
+ 
+
+            float eatingTime = 1;
+            while (eatingTime > 0 && food)
+            {
+                eatingTime -= Time.deltaTime;
+                yield return null;
+            }
+
+            if (food) Destroy(food.gameObject);
+
+            yield return null;
+
+            target = spawnPoint.transform;
+        }
+
+    */
+
+    }

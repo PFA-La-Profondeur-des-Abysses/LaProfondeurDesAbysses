@@ -85,50 +85,42 @@ public class IA_Fish_Vegetarien : MonoBehaviour
     void FixedUpdate()
     {
 
-       
-
-        if(target != null && timerWaitUntilNextTarget < 0)
+        if (target == null || target.tag != "food")
         {
-            
-            timerTarget -= Time.deltaTime;
-            if(timerTarget < 0)
+            if (target != null && timerWaitUntilNextTarget < 0)
             {
-                target = null;
-                timerWaitUntilNextTarget = Random.Range(2, timerWaitDurationMax);
+
+                timerTarget -= Time.deltaTime;
+                if (timerTarget < 0)
+                {
+                    target = null;
+                    timerWaitUntilNextTarget = Random.Range(2, timerWaitDurationMax);
+                }
+            }
+
+            else
+            {
+                timerWaitUntilNextTarget -= Time.deltaTime;
+                if (timerWaitUntilNextTarget < 0)
+                {
+                    target = spawnPoint.transform;
+                    timerTarget = Random.Range(2, timerTargetDurationMax);
+
+                }
             }
         }
 
-        else
-        {
-            timerWaitUntilNextTarget -= Time.deltaTime;
-            if(timerWaitUntilNextTarget < 0)
-            {
-                target = spawnPoint.transform;
-                timerTarget = Random.Range(2, timerTargetDurationMax);
-
-            }
-        }
 
         Moving();
+       
 
-
-        if(transform.rotation.z < 180 && transform.rotation.z > 0)
-        {
-            transform.localScale.Set(-0.34f, 0.34f, 0.34f);
-            Debug.Log("RETOURNE Y");
-
-        }
-
-        if (transform.rotation.z > 180 || transform.rotation.z < 0)
-        {
-            Debug.Log("TOURNE Y");
-            transform.localScale.Set(-0.34f, -0.34f, 0.34f);
-        }
     }
 
     void Moving()
     {
         Vector3 acceleration = Vector3.zero;
+
+        GestionRotationFish();
 
         if (target != null)
         {
@@ -192,6 +184,22 @@ public class IA_Fish_Vegetarien : MonoBehaviour
 
     }
 
+
+    public void GestionRotationFish()
+    {
+
+        if (transform.rotation.z < 90 && transform.rotation.z > -90)
+        {
+            Debug.Log("positif y");
+            this.transform.localScale = new Vector3(-0.34f, 0.34f, 0.34f);
+        }
+
+        if (transform.rotation.z > 90 || transform.rotation.z < -90)
+        {
+            Debug.Log("Negatif Y");
+            this.transform.localScale = new Vector3(-0.34f, -0.34f, 0.34f);
+        }
+    }
     Vector3 SteerTowards(Vector3 vector3) //se diriger vers
     {
       
@@ -246,7 +254,7 @@ public class IA_Fish_Vegetarien : MonoBehaviour
 
     public Vector2[] IA_FishHelper()
     {
-        const int numViewDirections = 3000;
+        const int numViewDirections = 300;
 
         Vector2[] directions = new Vector2[numViewDirections];
 

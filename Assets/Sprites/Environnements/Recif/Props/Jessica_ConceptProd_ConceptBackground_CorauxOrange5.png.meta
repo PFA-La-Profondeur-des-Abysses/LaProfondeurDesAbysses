@@ -107,10 +107,10 @@ TextureImporter:
       name: Jessica_ConceptProd_ConceptBackground_CorauxOrange5_0
       rect:
         serializedVersion: 2
-        x: 2629
-        y: 500
-        width: 821
-        height: 640
+        x: 2650
+        y: 508
+        width: 788
+        height: 648
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

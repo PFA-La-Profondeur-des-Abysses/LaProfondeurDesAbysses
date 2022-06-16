@@ -23,7 +23,8 @@ public class AppareilPhoto : MonoBehaviour
 
     /*
      * A chaque frame:
-     * si le temps est en pause, calcule la position de la souris dans le monde et l'assigne à la caméra qui prendra le screen
+     * A chaque frame:
+     * si le mode photo est activé, calcule la position de la souris dans le monde et l'assigne à la caméra qui prendra le screen
      * si la touche echap OU tab est cliquée ET que la caméra est activée (la caméra n'est active que quand le mode photo est lancé), sort du mode photo et réactive le rapport
      * si la touche du screen est cliquée ET que la caméra est activée, lance la fonction qui prends un screenshot
      */
@@ -43,10 +44,11 @@ public class AppareilPhoto : MonoBehaviour
             StartCoroutine(TakeScreenshot());
         }
         
-        if (Time.timeScale == 1) return;
+        if (!modeOn) return;
         
         var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(position.x, position.y, 0);
+        transform.rotation = Quaternion.Euler(Vector3.zero);
     }
 
     /*
@@ -99,9 +101,9 @@ public class AppareilPhoto : MonoBehaviour
         if(isLoaded)
         {
             Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
-            //picture.sprite = sprite;
-            //rapport.GetCurrentPageImage().sprite = sprite;
-            string path = Application.persistentDataPath + "/fishStructure.json";
+            picture.sprite = sprite;
+            rapport.GetCurrentPageImage().sprite = sprite;
+            /*string path = Application.persistentDataPath + "/fishStructure.json";
             File.WriteAllText(path, JsonConvert.SerializeObject(new Page("DosBleu", 
                 FeedingRegime.Inconnu, "", sprite)));
 
@@ -110,7 +112,7 @@ public class AppareilPhoto : MonoBehaviour
             sprite = page.picture;
             yield return null;
             picture.sprite = sprite;
-            rapport.GetCurrentPageImage().sprite = sprite;
+            rapport.GetCurrentPageImage().sprite = sprite;*/
         }
         cam.gameObject.SetActive(false);
         GetComponent<Animator>().SetTrigger("TakePicture");

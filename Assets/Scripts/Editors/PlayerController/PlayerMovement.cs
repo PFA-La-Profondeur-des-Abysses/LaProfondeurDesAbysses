@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Unity.Mathematics;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,12 +11,19 @@ public class PlayerMovement : MonoBehaviour
     [Space]
 
     public float speed = 7f;
-
+    public float intertieSpeed;
     public float rotationSpeed = 2f;
+
+    public float rotationLimit;
 
     public Vector2 velocity;
 
     public GameObject pivotRotation;
+    
+    public float angle; 
+    public float axis;
+    private Vector3 rotation;
+    private int side;
 
     float angleRotationZ;
     float angleRotationY;
@@ -67,11 +75,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        //on check si les controles pour le deplacement sur l'axe horizontal sont pressés
-        //On regarde ensuite la valeur : > 0 = on se déplace vers la droite
-        //                               < 0 = on se déplace vers la gauche
+        //on check si les controles pour le deplacement sur l'axe horizontal sont pressï¿½s
+        //On regarde ensuite la valeur : > 0 = on se dï¿½place vers la droite
+        //                               < 0 = on se dï¿½place vers la gauche
         /*
         _moveInput = playerControls.Player.Movement_Player.ReadValue<Vector2>();
 
@@ -97,23 +105,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    [Serializable]
-    public class Mapping
-    {
-        public string nomControlle;
-        public KeyCode keyCode;
-    }
-
-
-    [Serializable]
-    public class MappingList
-    {
-        public Mapping[] mapping;
-
-
-    }
-
-
     public void MovementAndRotation()
     {
         /*
@@ -127,118 +118,157 @@ public class PlayerMovement : MonoBehaviour
 
         movementDirection.Normalize();
 
-        rb.velocity = movementDirection * speed * Time.deltaTime;
+        rb.velocity = Vector2.Lerp(rb.velocity, movementDirection * speed, Time.deltaTime * intertieSpeed);
 
         /*
         * Rotation
         */
-        if (movementDirection != Vector2.zero)
+        bool canTurnRight = false;
+        bool canTurnLeft = true;
+
+        /*
+         * Clamp la rotation ï¿½ gauche : de -40 ï¿½ -140
+         * Clamp la rotation ï¿½ droite : de 40 ï¿½ 140
+         * 
+         * Faire la rota visuelle sur Y
+         */
+
+        /*
+         * Rotation Gauche et droite
+        */
+        /*
+        if(_moveInput.x < 0) // left gauche
         {
-            bool canTurnRight = false;
-            bool canTurnLeft = true;
-
-            /*
-             * Clamp la rotation à gauche : de -40 à -140
-             * Clamp la rotation à droite : de 40 à 140
-             * 
-             * Faire la rota visuelle sur Y
-             */
-
-            /*
-             * Rotation Gauche et droite
-            */
-            /*
-            if(_moveInput.x < 0) // left gauche
+            if(canTurnLeft)
             {
-                if(canTurnLeft)
+
+                if (transform.rotation.y == 180)
                 {
 
-                    if (transform.rotation.y == 180)
-                    {
+                    angleRotationY = Mathf.Clamp((_moveInput.x * 180 / 8) / rotationSpeed + angleRotationY, -180f, 0f);
 
-                        angleRotationY = Mathf.Clamp((_moveInput.x * 180 / 8) / rotationSpeed + angleRotationY, -180f, 0f);
+                    Vector3 rotationYTo = new Vector3(transform.rotation.x, angleRotationY, transform.rotation.z );
 
-                        Vector3 rotationYTo = new Vector3(transform.rotation.x, angleRotationY, transform.rotation.z );
+                    transform.localRotation = Quaternion.Euler(rotationYTo);
 
-                        transform.localRotation = Quaternion.Euler(rotationYTo);
-
-                        canTurnLeft = false;
-                        canTurnRight = true;
-                    }
-                    
+                    canTurnLeft = false;
+                    canTurnRight = true;
                 }
+                
             }
-
-            if(_moveInput.x > 0) // right droite 
-            {
-                if (canTurnRight)
-                {
-
-
-                    if (transform.rotation.y == 0)
-                    {
-                        angleRotationY = Mathf.Clamp((_moveInput.x * 180 / 8) / rotationSpeed + angleRotationY, -180, 0);
-
-                        Vector3 rotationYTo = new Vector3(transform.rotation.x, angleRotationY, transform.rotation.z);
-
-                        transform.localRotation = Quaternion.Euler(rotationYTo);
-
-                        canTurnLeft = true;
-                        canTurnRight = false;
-                    }
-
-                }
-            }
-            
-
-
-
-            if (_moveInput.y != 0 && _moveInput.x > 0)
-            {
-                angleRotationZ = Mathf.Clamp((_moveInput.y*180/8) / rotationSpeed + angleRotationZ, -140f, -40f);
-
-                Vector3 rotationTo = new Vector3(transform.rotation.x, transform.rotation.y, angleRotationZ);
-
-                transform.localRotation = Quaternion.Euler(rotationTo);
-            }
-
-            if (_moveInput.y != 0 && _moveInput.x < 0)
-            {
-                angleRotationZ = Mathf.Clamp((_moveInput.y * 180 / 8) / rotationSpeed + angleRotationZ, -140f, -40f);
-
-                Vector3 rotationTo = new Vector3(transform.rotation.x, transform.rotation.y, angleRotationZ);
-
-                transform.localRotation = Quaternion.Euler(rotationTo);
-            }
-            */
-
-            /*
-            * ancien code 
-            * 
-            */
-
-
-            Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, movementDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRoration, rotationSpeed * Time.deltaTime); //-40,-140 -> plage de valeur si on veut clamp.
-            /*
-            if (transform.rotation.z < 0f && transform.rotation.z > -180f)
-            {
-                Vector3 rotationTo = new Vector3(0, transform.rotation.y, transform.rotation.z);
-
-                transform.localRotation = Quaternion.Euler(rotationTo);
-            }
-
-            else
-            {
-
-
-                Vector3 rotationTo = new Vector3(180, transform.rotation.y, transform.rotation.z);
-
-                transform.localRotation = Quaternion.Euler(rotationTo);
-            }
-            */
-
         }
+
+        if(_moveInput.x > 0) // right droite 
+        {
+            if (canTurnRight)
+            {
+
+
+                if (transform.rotation.y == 0)
+                {
+                    angleRotationY = Mathf.Clamp((_moveInput.x * 180 / 8) / rotationSpeed + angleRotationY, -180, 0);
+
+                    Vector3 rotationYTo = new Vector3(transform.rotation.x, angleRotationY, transform.rotation.z);
+
+                    transform.localRotation = Quaternion.Euler(rotationYTo);
+
+                    canTurnLeft = true;
+                    canTurnRight = false;
+                }
+
+            }
+        }
+        
+
+
+        
+        if (_moveInput.y != 0 && _moveInput.x > 0)
+        {
+            angleRotationZ = Mathf.Clamp((_moveInput.y*180/8) / rotationSpeed + angleRotationZ, -140f, -40f);
+
+            Vector3 rotationTo = new Vector3(transform.rotation.x, transform.rotation.y, angleRotationZ);
+
+            transform.localRotation = Quaternion.Euler(rotationTo);
+        }
+
+        if (_moveInput.y != 0 && _moveInput.x < 0)
+        {
+            angleRotationZ = Mathf.Clamp((_moveInput.y * 180 / 8) / rotationSpeed + angleRotationZ, -140f, -40f);
+
+            Vector3 rotationTo = new Vector3(transform.rotation.x, transform.rotation.y, angleRotationZ);
+
+            transform.localRotation = Quaternion.Euler(rotationTo);
+        }
+        */
+
+        /*
+        * ancien code 
+        * 
+        */
+        Debug.Log(_moveInput);
+        float i = 1;
+
+        if (_moveInput.y == 1f || _moveInput.y == -1f)
+        {
+            axis = movementDirection.y * rotationSpeed;
+            i = _moveInput.y;
+        }
+        
+        //si une des touches de dÃ©placement de la lampe est appuyÃ©e, donne Ã  la variable axis la valeur de l'angle voulu
+        else axis = Mathf.Lerp(axis, 0, Time.deltaTime * rotationSpeed);
+        //quand les touches n'est pas relachÃ©e, baisse graduellement la valeur d'axis (simule un inertie)
+        angle = Mathf.Clamp(angle + axis, -rotationLimit, rotationLimit);
+        
+        if (_moveInput.x == -1f || _moveInput.x == 1f)
+        {
+            transform.localScale = new Vector3(_moveInput.x, 1, 1);
+            float angleDestination = 0;
+            if (_moveInput.y == 1f || _moveInput.y == -1f) 
+                angleDestination = Mathf.Clamp(angle, -30, 25);
+            angle = Mathf.Lerp(angle, angleDestination, Time.deltaTime * rotationSpeed * 2);
+        }
+
+        rotation = new Vector3(rotation.x, rotation.y, angle * transform.localScale.x);
+        transform.localRotation = Quaternion.Euler(rotation);
+
+        //Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, movementDirection);
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRoration, rotationSpeed * Time.deltaTime); //-40,-140 -> plage de valeur si on veut clamp.
+        /*
+        if (transform.rotation.z < 0f && transform.rotation.z > -180f)
+        {
+            Vector3 rotationTo = new Vector3(0, transform.rotation.y, transform.rotation.z);
+
+            transform.localRotation = Quaternion.Euler(rotationTo);
+        }
+
+        else
+        {
+
+
+            Vector3 rotationTo = new Vector3(180, transform.rotation.y, transform.rotation.z);
+
+            transform.localRotation = Quaternion.Euler(rotationTo);
+        }
+        */
+
+    
+
+    }
+
+
+    [Serializable]
+    public class Mapping
+    {
+        public string nomControlle;
+        public KeyCode keyCode;
+    }
+
+
+    [Serializable]
+    public class MappingList
+    {
+        public Mapping[] mapping;
+
 
     }
 }

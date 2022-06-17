@@ -30,6 +30,7 @@ public class FoodManager : MonoBehaviour
     
     void Update()
     {
+        if (Time.timeScale == 0) return; //EXIT si le rapport est utilisé
         if(Input.GetKeyDown(KeyCode.G) && canThrow)
         {
             food = meat;

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,7 @@ public class RapportManager : MonoBehaviour
         for (var i = 0; i < nbPages - 1; i++)
         {
             var newPage = Instantiate(child.GetChild(0).gameObject, child);
+            newPage.name = "Page" + (i + 1);
             pages.Add(newPage);
             newPage.SetActive(false);
         }
@@ -49,6 +51,7 @@ public class RapportManager : MonoBehaviour
         for (var i = 0; i < nbPages - 1; i++)
         {
             var newTab = Instantiate(tabsParent.GetChild(1).gameObject, tabsParent);
+            newTab.name = "Tab" + (i + 1);
             tabs.Add(newTab);
         }
         tabsParent.GetChild(2).SetSiblingIndex(tabsParent.childCount - 1);
@@ -95,7 +98,7 @@ public class RapportManager : MonoBehaviour
     public void ToggleRapport(bool open)
     {
         on = open;
-        Time.timeScale = on ? 0 : 1;
+        //Time.timeScale = on ? 0 : 1;
         rapport.SetActive(on);
         pages[currentPage].SetActive(on);
     }
@@ -105,6 +108,7 @@ public class RapportManager : MonoBehaviour
      */
     public void ChangePage(int index)
     {
+        ActivatePage((currentPage + index + nbPages) % nbPages);
         currentPage = (currentPage + index + nbPages) % nbPages;
         foreach (var page in pages)
         {
@@ -115,13 +119,27 @@ public class RapportManager : MonoBehaviour
             tab.GetComponent<Image>().sprite = tab == tabs[currentPage] ? pageSelectedImage : pageNotSelectedImage;
         }
     }
+    
+    public void SelectPage(GameObject obj)
+    {
+        ActivatePage(int.Parse(obj.name.Replace("Tab", "")));
+    }
+
+    public void ActivatePage(int pageNumber)
+    {
+        pages[currentPage].SetActive(false);
+        tabs[currentPage].GetComponent<Image>().sprite = pageNotSelectedImage;
+        currentPage = pageNumber;
+        pages[currentPage].SetActive(true);
+        tabs[currentPage].GetComponent<Image>().sprite = pageSelectedImage;
+    }
 
     /*
      * Ferme la page actuelle
      */
     public void CloseCurrentPage()
     {
-        Time.timeScale = 1;
+        //Time.timeScale = 1;
         rapport.SetActive(false);
     }
 
@@ -130,7 +148,7 @@ public class RapportManager : MonoBehaviour
      */
     public void OpenCurrentPage()
     {
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
         rapport.SetActive(true);
     }
 
@@ -154,6 +172,7 @@ public class RapportManager : MonoBehaviour
                    pageTransform.Find("Notes").GetComponent<TMP_InputField>().text != "" ||
                    pageTransform.Find("Regime").GetComponent<TMP_Dropdown>().value != 0;
         tabs[currentPage].transform.GetChild(0).gameObject.SetActive(!fill);
+        Debug.Log("fill");
     }
 
     /*
@@ -162,5 +181,15 @@ public class RapportManager : MonoBehaviour
     public void OnChangeNameValue()
     {
         FillPage();
+    }
+
+    public void OnContentSelect(string text)
+    {
+        Time.timeScale = 0;
+    }
+
+    public void OnContentDeselect(string text)
+    {
+        Time.timeScale = 1;
     }
 }

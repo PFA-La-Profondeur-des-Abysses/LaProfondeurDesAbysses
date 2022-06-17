@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AppareilPhoto : MonoBehaviour
 {
-    [SerializeField] private KeyCode startPhotoModeKey; // Touche qui sera utilisée pour lancer le mode photo
     [SerializeField] private KeyCode takePictureKey; // Touche qui sera utilisée pour prendre une photo
     private Camera cam; // Variable stockant la caméra qui fera le screen
+    public Camera mainCam;
     [SerializeField] private RapportManager rapport; // Objet rapport
 
     public Image picture; // L'image utilisée pour l'animation
@@ -18,7 +19,7 @@ public class AppareilPhoto : MonoBehaviour
 
     void Awake()
     {
-        cam = transform.GetChild(0).GetComponent<Camera>(); // Assigne la caméra qui prendra la photo à la variable cam
+        cam = transform.GetChild(0).GetChild(0).GetComponent<Camera>(); // Assigne la caméra qui prendra la photo à la variable cam
     }
 
     /*
@@ -38,7 +39,7 @@ public class AppareilPhoto : MonoBehaviour
             rapport.ToggleRapport(true);
         }
         
-        if (Input.GetKeyDown(takePictureKey) && cam.gameObject.activeSelf)
+        if (Input.GetButtonDown("Fire1") && cam.gameObject.activeSelf)
         {
             cam.targetTexture = RenderTexture.GetTemporary(400, 400, 16);
             StartCoroutine(TakeScreenshot());
@@ -46,9 +47,10 @@ public class AppareilPhoto : MonoBehaviour
         
         if (!modeOn) return;
         
-        var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(position.x, position.y, 0);
-        transform.rotation = Quaternion.Euler(Vector3.zero);
+        //var position = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        //Debug.Log(mainCam.ScreenToWorldPoint(Input.mousePosition));
+        transform.GetChild(0).position = mainCam.ScreenToWorldPoint(Input.mousePosition + new Vector3(0, 0, 8f));
+        transform.GetChild(0).rotation = Quaternion.Euler(Vector3.zero);
     }
 
     /*

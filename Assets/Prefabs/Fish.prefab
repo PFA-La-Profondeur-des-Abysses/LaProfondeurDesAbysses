@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -7085028996601711939}
   - component: {fileID: 1093750466}
   - component: {fileID: 1093750465}
+  - component: {fileID: 8150091885215908199}
   m_Layer: 12
   m_Name: Fish
   m_TagString: Untagged
@@ -100,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 34767173c1dcad145a0582ff3a3771ed, type: 2}
+  regime: 0
   position: {x: 0, y: 0, z: 0}
   forward: {x: 0, y: 0, z: 0}
   right: {x: 0, y: 0, z: 0}
@@ -487,3 +489,23 @@ PolygonCollider2D:
       - {x: -6.9291677, y: -4.077107}
       - {x: -6.724993, y: -4.038824}
       - {x: -6.5718627, y: -3.9239762}
+--- !u!95 &8150091885215908199
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6335372209992320466}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2374afe6e1294bc4c927e5eed00a4c37, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

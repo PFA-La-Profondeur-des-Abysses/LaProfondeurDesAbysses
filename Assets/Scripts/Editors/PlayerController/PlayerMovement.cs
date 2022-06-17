@@ -7,14 +7,17 @@ using Unity.Mathematics;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Variable De Deplacement")]
-    [Space]
+    [Header("Variable De Deplacement")] [Space]
 
+    public float startSpeed;
     public float speed = 7f;
     public float intertieSpeed;
     public float rotationSpeed = 2f;
 
     public float rotationLimit;
+
+    public bool turbo;
+    public float turboSpeed;
 
     public Vector2 velocity;
 
@@ -100,6 +103,10 @@ public class PlayerMovement : MonoBehaviour
         }
         */
 
+        speed = startSpeed;
+        
+        if(playerControls.Player.Turbo.IsPressed()) Turbo();
+        
         MovementAndRotation();
 
     }
@@ -253,6 +260,11 @@ public class PlayerMovement : MonoBehaviour
 
     
 
+    }
+
+    public void Turbo()
+    {
+        speed = startSpeed * turboSpeed;
     }
 
 

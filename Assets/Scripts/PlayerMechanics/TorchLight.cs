@@ -10,7 +10,6 @@ public class TorchLight : MonoBehaviour
     public float speed; //vitesse de mouvement de la lampe
     public float angle; 
     public float axis;
-
     private Vector3 rotation;
 
     void Update()

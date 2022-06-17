@@ -15,7 +15,7 @@ public class SonarWave : MonoBehaviour
     {
         if(other.CompareTag("Interest") || other.CompareTag("Fish"))
         {
-            StartCoroutine(sonar.DetectObject(other.transform));
+            sonar.DetectObject(other.gameObject);
         }
     }
 }

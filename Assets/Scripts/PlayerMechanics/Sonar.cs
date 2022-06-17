@@ -14,6 +14,12 @@ public class Sonar : MonoBehaviour
 
     private List<GameObject> lights = new List<GameObject>();
     private float scanningTime;
+    private Transform player;
+
+    void Start()
+    {
+        player = transform.GetComponentInParent<PlayerMovement>().transform;
+    }
 
     /*
      * A chaque frame:
@@ -44,6 +50,7 @@ public class Sonar : MonoBehaviour
         }
         
         spotter.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        transform.localScale = player.localScale;
     }
 
     /*
@@ -58,7 +65,7 @@ public class Sonar : MonoBehaviour
         scan.position = transform.position;
         scan.parent = transform.root.parent;
         float t = 0;
-        while (t < 10)
+        while (t < 3)
         {
             float coordinate = t * speed;
             scan.localScale = new Vector3(coordinate, coordinate, 1);
@@ -66,7 +73,7 @@ public class Sonar : MonoBehaviour
             scanningTime = 1f;
             yield return null;
         }
-        StartCoroutine(ActivateSpotter());
+        StartCoroutine(ActivateCircle());
         scan.gameObject.SetActive(false);
     }
     
@@ -74,13 +81,19 @@ public class Sonar : MonoBehaviour
      * Lorsque l'objet du scan détecte un objet, il lance cette fonction
      * La fonction active le cercle du sonnar, puis affiche l'objet détecté par une lumière
      */
-    public IEnumerator DetectObject(Transform objectPosition)
+    public void DetectObject(GameObject target)
     {
-        StartCoroutine(ActivateSpotter());
+        StartCoroutine(ActivateCircle());
+        StartCoroutine(InstantiateTracker(target));
+    }
+
+    public IEnumerator InstantiateTracker(GameObject target)
+    {
         GameObject newLight = Instantiate(light.gameObject, spotter);
         newLight.SetActive(true);
-        newLight.transform.right = objectPosition.position - transform.position;
-        if(objectPosition.name.Contains("Beacon")) 
+        
+        StartCoroutine(FollowTarget(newLight, target));
+        if(target.name.Contains("Beacon")) 
             newLight.transform.GetChild(0).GetComponent<Light2D>().color = Color.yellow;
         lights.Add(newLight);
         float t = 0;
@@ -92,13 +105,23 @@ public class Sonar : MonoBehaviour
             scanningTime = 1.5f;
             yield return null;
         }
-        light.GetChild(0).localPosition = new Vector3(4, 0, 0);
+        newLight.transform.GetChild(0).localPosition = new Vector3(4, 0, 0);
+    }
+
+    public IEnumerator FollowTarget(GameObject newLight, GameObject target)
+    {
+        while (newLight)
+        {
+            if (!newLight) break;
+            newLight.transform.right = target.transform.position - transform.position;
+            yield return null;
+        }
     }
 
     /*
      * Fonction qui permet d'activer le cercle du sonnar
      */
-    private IEnumerator ActivateSpotter()
+    private IEnumerator ActivateCircle()
     {
         if(!spotter.gameObject.activeSelf)
         {

@@ -62,6 +62,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Turbo"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3329b60-badd-49a4-8c30-2b7fd2f97852"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -196,6 +205,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""UI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b1322dc-c545-4b3c-a025-546d5ed8f511"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turbo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +228,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Movement_Bras = m_Player.FindAction("Movement_Bras", throwIfNotFound: true);
         m_Player_Torch = m_Player.FindAction("Torch", throwIfNotFound: true);
         m_Player_UI = m_Player.FindAction("UI", throwIfNotFound: true);
+        m_Player_Turbo = m_Player.FindAction("Turbo", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -271,6 +292,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement_Bras;
     private readonly InputAction m_Player_Torch;
     private readonly InputAction m_Player_UI;
+    private readonly InputAction m_Player_Turbo;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -279,6 +301,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Movement_Bras => m_Wrapper.m_Player_Movement_Bras;
         public InputAction @Torch => m_Wrapper.m_Player_Torch;
         public InputAction @UI => m_Wrapper.m_Player_UI;
+        public InputAction @Turbo => m_Wrapper.m_Player_Turbo;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -300,6 +323,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @UI.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUI;
                 @UI.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUI;
                 @UI.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUI;
+                @Turbo.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTurbo;
+                @Turbo.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTurbo;
+                @Turbo.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTurbo;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -316,6 +342,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @UI.started += instance.OnUI;
                 @UI.performed += instance.OnUI;
                 @UI.canceled += instance.OnUI;
+                @Turbo.started += instance.OnTurbo;
+                @Turbo.performed += instance.OnTurbo;
+                @Turbo.canceled += instance.OnTurbo;
             }
         }
     }
@@ -326,5 +355,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMovement_Bras(InputAction.CallbackContext context);
         void OnTorch(InputAction.CallbackContext context);
         void OnUI(InputAction.CallbackContext context);
+        void OnTurbo(InputAction.CallbackContext context);
     }
 }

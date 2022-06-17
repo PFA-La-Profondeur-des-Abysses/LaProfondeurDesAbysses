@@ -92,33 +92,34 @@ public class IA_Fish_Vegetarien : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        if (target == null || target.tag != "food")
+        if(food == null)
         {
-            if (target != null && timerWaitUntilNextTarget < 0)
+            if (target == null || target.tag != "food")
             {
-
-                timerTarget -= Time.deltaTime;
-                if (timerTarget < 0)
+                if (target != null && timerWaitUntilNextTarget < 0)
                 {
-                    target = null;
-                    timerWaitUntilNextTarget = Random.Range(2, timerWaitDurationMax);
+
+                    timerTarget -= Time.deltaTime;
+                    if (timerTarget < 0)
+                    {
+                        target = null;
+                        timerWaitUntilNextTarget = Random.Range(2, timerWaitDurationMax);
+                    }
                 }
-            }
 
-            else
-            {
-                timerWaitUntilNextTarget -= Time.deltaTime;
-                if (timerWaitUntilNextTarget < 0)
+                else
                 {
-                    target = spawnPoint.transform;
-                    timerTarget = Random.Range(2, timerTargetDurationMax);
+                    timerWaitUntilNextTarget -= Time.deltaTime;
+                    if (timerWaitUntilNextTarget < 0)
+                    {
+                        target = spawnPoint.transform;
+                        timerTarget = Random.Range(2, timerTargetDurationMax);
 
+                    }
                 }
             }
         }
-
-
+        
         Moving();
        
 
@@ -162,6 +163,7 @@ public class IA_Fish_Vegetarien : MonoBehaviour
         //check si il y a une future collision et cherche une nouvelle trajectoire sans collision.
         if (isGoingToCollideSomething())
         {
+            Debug.Log("Collision INC.");
             Vector3 collisionAvoidDir = ObstacleRays();
             Vector3 collisionAvoidForce = SteerTowards(collisionAvoidDir) * settings.avoidCollisionWeight;
             acceleration += collisionAvoidForce;
@@ -234,12 +236,11 @@ public class IA_Fish_Vegetarien : MonoBehaviour
        
         if (hit)
         {
-            Debug.DrawRay(transform.position, right * settings.collisionAvoidDst, Color.red);
             return true;
         }
         else
         {
-            Debug.DrawRay(transform.position, right * settings.collisionAvoidDst, Color.green);
+
         }
         return false; // au cas où :)
     }
@@ -252,6 +253,7 @@ public class IA_Fish_Vegetarien : MonoBehaviour
      */
     Vector2 ObstacleRays()
     {
+        Debug.Log("Calcul Trajectoire");
         Vector2[] rayDirection = IA_FishHelper();
 
         for (int i = 0; i < rayDirection.Length; i++)
@@ -260,7 +262,6 @@ public class IA_Fish_Vegetarien : MonoBehaviour
 
             RaycastHit2D hit = Physics2D.CircleCast(transform.position, settings.avoidanceRadius, dir, settings.collisionAvoidDst, settings.obstacleMask);
 
-            Debug.DrawRay(transform.position, dir, Color.gray);
             if (!hit)
             {
                 return dir;
@@ -277,26 +278,46 @@ public class IA_Fish_Vegetarien : MonoBehaviour
      */
     public Vector2[] IA_FishHelper()
     {
+
         const int numViewDirections = 300;
 
         Vector2[] directions = new Vector2[numViewDirections];
+        
+       float goldenRatio = (1 + Mathf.Sqrt(5)) / 2;
+       float angleIncrement = Mathf.PI * 2 * goldenRatio;
 
-        float goldenRatio = (1 + Mathf.Sqrt(5)) / 2;
-        float angleIncrement = Mathf.PI * 2 * goldenRatio;
+       for (int i = 0; i < numViewDirections; i++)
+       {
+           float t = (float)i / numViewDirections;
+           float inclination = Mathf.Acos(1 - 2 * t);
+           float azimuth = angleIncrement * i; 
 
+           float x = Mathf.Sin(inclination); //anciennemnt azimuth
+           float y = Mathf.Cos(inclination); //anciennemnt azimuth
+
+
+           directions[i] = new Vector3(x, y);
+
+
+        }
+       
+        /*
+         float turnFraction = 1.68f;
         for (int i = 0; i < numViewDirections; i++)
         {
-            float t = (float)i / numViewDirections;
-            float inclination = Mathf.Acos(1 - 2 * t);
-            float azimuth = angleIncrement * i; 
+            float dst =   i / (numViewDirections -1f);
+            float angle  = 2 * Mathf.PI * turnFraction * i;
 
-            float x = Mathf.Sin(inclination); //anciennemnt azimuth
-            float y = Mathf.Cos(inclination); //anciennemnt azimuth
+
+            float x = dst * Mathf.Sin(angle);
+            float y = dst * Mathf.Cos(angle);
 
 
             directions[i] = new Vector3(x, y);
-        }
 
+            Debug.DrawRay(transform.position, directions[i] *settings.collisionAvoidDst, Color.white);
+        }
+        */
         return directions;
     }
 
@@ -319,6 +340,7 @@ public class IA_Fish_Vegetarien : MonoBehaviour
         }
 
     }
+
     /*
     private IEnumerator Eat()
         {

@@ -98,7 +98,7 @@ public class RapportManager : MonoBehaviour
     public void ToggleRapport(bool open)
     {
         on = open;
-        //Time.timeScale = on ? 0 : 1;
+        Time.timeScale = 1;
         rapport.SetActive(on);
         pages[currentPage].SetActive(on);
     }
@@ -109,15 +109,6 @@ public class RapportManager : MonoBehaviour
     public void ChangePage(int index)
     {
         ActivatePage((currentPage + index + nbPages) % nbPages);
-        currentPage = (currentPage + index + nbPages) % nbPages;
-        foreach (var page in pages)
-        {
-            page.SetActive(page == pages[currentPage]);
-        }
-        foreach (var tab in tabs)
-        {
-            tab.GetComponent<Image>().sprite = tab == tabs[currentPage] ? pageSelectedImage : pageNotSelectedImage;
-        }
     }
     
     public void SelectPage(GameObject obj)
@@ -139,7 +130,7 @@ public class RapportManager : MonoBehaviour
      */
     public void CloseCurrentPage()
     {
-        //Time.timeScale = 1;
+        Time.timeScale = 1;
         rapport.SetActive(false);
     }
 

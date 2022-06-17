@@ -19,7 +19,7 @@ public class AppareilPhoto : MonoBehaviour
 
     void Awake()
     {
-        cam = transform.GetChild(0).GetChild(0).GetComponent<Camera>(); // Assigne la caméra qui prendra la photo à la variable cam
+        cam = transform.GetChild(0).GetComponent<Camera>(); // Assigne la caméra qui prendra la photo à la variable cam
     }
 
     /*
@@ -49,8 +49,8 @@ public class AppareilPhoto : MonoBehaviour
         
         //var position = mainCam.ScreenToWorldPoint(Input.mousePosition);
         //Debug.Log(mainCam.ScreenToWorldPoint(Input.mousePosition));
-        transform.GetChild(0).position = mainCam.ScreenToWorldPoint(Input.mousePosition + new Vector3(0, 0, 8f));
-        transform.GetChild(0).rotation = Quaternion.Euler(Vector3.zero);
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0, 0, 90f));
+        transform.rotation = Quaternion.Euler(Vector3.zero);
     }
 
     /*
@@ -60,7 +60,7 @@ public class AppareilPhoto : MonoBehaviour
     {
         modeOn = true;
         cam.gameObject.SetActive(modeOn);
-        rapport.CloseCurrentPage();
+        //rapport.CloseCurrentPage();
     }
 
     /*

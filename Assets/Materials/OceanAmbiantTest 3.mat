@@ -42,12 +42,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Power: 0.3
+    - _Power: 0.6
     - _Power_1: 24.94
-    - _Scale: 2.5
-    - _Speed: 0.15
+    - _Scale: 0.4
+    - _Speed: 0.5
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _Direction: {r: -0.86, g: 0, b: 0, a: 0}
-    - _Tiling: {r: 2.87, g: -1.92, b: 0, a: 0}
+    - _Tiling: {r: 10, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []

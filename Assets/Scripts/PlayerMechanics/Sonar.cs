@@ -9,16 +9,19 @@ public class Sonar : MonoBehaviour
 
     public Transform scan;
     public Transform spotter;
-    public Transform light;
+    new public Transform light;
     public float speed;
 
     private List<GameObject> lights = new List<GameObject>();
     private float scanningTime;
     private Transform player;
 
+    private AudioSource sfx;
+
     void Start()
     {
         player = transform.GetComponentInParent<PlayerMovement>().transform;
+        sfx = GetComponent<AudioSource>();
     }
 
     /*
@@ -30,7 +33,7 @@ public class Sonar : MonoBehaviour
     {
         if (Time.timeScale == 0) return;
         
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if(!scan.gameObject.activeSelf)
             {
@@ -60,6 +63,8 @@ public class Sonar : MonoBehaviour
      */
     private IEnumerator Scan()
     {
+        sfx.Play();
+        
         scan.gameObject.SetActive(true);    
         scan.localScale = new Vector3(1, 1, 1);
         scan.position = transform.position;

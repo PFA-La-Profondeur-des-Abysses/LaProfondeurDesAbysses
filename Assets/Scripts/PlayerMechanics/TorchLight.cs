@@ -11,12 +11,23 @@ public class TorchLight : MonoBehaviour
     public float angle; 
     public float axis;
     private Vector3 rotation;
+    
+    private AudioSource sfx;
+
+    void Start()
+    {
+        sfx = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
         if (Time.timeScale == 0) return;
 
-        if(Input.GetKeyDown(torchekey)) torche.SetActive(!torche.activeSelf);
+        if(Input.GetKeyDown(torchekey))
+        {
+            torche.SetActive(!torche.activeSelf);
+            sfx.Play();
+        }
     }
     
     void FixedUpdate()

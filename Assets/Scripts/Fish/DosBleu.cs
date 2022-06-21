@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Object = System.Object;
 using Random = UnityEngine.Random;
 
 public class DosBleu : MonoBehaviour
@@ -18,6 +19,8 @@ public class DosBleu : MonoBehaviour
     public FeedingRegime regime;
 
     private Vector3 destination;
+
+    public FishNames name;
 
     void Awake()
     {
@@ -101,5 +104,10 @@ public class DosBleu : MonoBehaviour
         
         StartCoroutine(DetectFood());
         destination = transform.position;
+    }
+
+    void OnBecameVisible()
+    {
+        PlayerMovement.player.SeeFish(name);
     }
 }

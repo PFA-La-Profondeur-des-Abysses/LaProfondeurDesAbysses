@@ -56,7 +56,7 @@ Material:
     - _Speed: 0
     m_Colors:
     - _Color: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 1}
-    - _Emissive: {r: 0, g: 1.5293447, b: 2.8086998, a: 1}
+    - _Emissive: {r: 0, g: 5.7353916, b: 10.432951, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

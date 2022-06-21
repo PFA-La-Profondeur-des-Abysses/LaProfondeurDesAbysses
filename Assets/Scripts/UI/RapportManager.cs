@@ -10,13 +10,17 @@ using UnityEngine.UI;
 
 public class RapportManager : MonoBehaviour
 {
+    public static RapportManager rapportManager;
+    
     public KeyCode openRapportKey; // touche qui ouvre le rapport
     [SerializeField] private GameObject rapport; // rapport
     [SerializeField] private List<GameObject> pages = new(); // liste des pages du rapport
     [SerializeField] private List<GameObject> tabs = new(); // liste des onglets dans le rapport
+    [SerializeField] private Dictionary<GameObject, FishNames> fishPage = new(); // liste des onglets dans le rapport
     private bool on; // true si le rapport est ouvert, false sinon
     [SerializeField] private int nbPages; // le nombre de pages du rapport
     [SerializeField] private int currentPage; // l'id de la page ouverte actuellement
+    private Animator animator;
 
     [Header("Visuals")]
     [SerializeField] private Sprite pageNotSelectedImage; // sprite de l'onglet non sélectionné
@@ -32,7 +36,10 @@ public class RapportManager : MonoBehaviour
      */
     void Start()
     {
-        var child = rapport.transform;
+        rapportManager = this;
+        animator = GetComponent<Animator>();
+        
+        /*var child = rapport.transform;
         pages.Add(child.GetChild(0).gameObject);
         
         for (var i = 0; i < nbPages - 1; i++)
@@ -55,8 +62,8 @@ public class RapportManager : MonoBehaviour
             tabs.Add(newTab);
         }
         tabsParent.GetChild(2).SetSiblingIndex(tabsParent.childCount - 1);
-        tab1.GetComponent<Image>().sprite = pageSelectedImage;
-        
+        tab1.GetComponent<Image>().sprite = pageSelectedImage;*/
+
         /*Dictionary<FishNames, Fish> dico = new Dictionary<FishNames, Fish>
         {
             { FishNames.DosBleu, new Fish("DosBleu", false, false, false) },
@@ -73,6 +80,7 @@ public class RapportManager : MonoBehaviour
         Debug.Log(dico1?.Keys);
         Debug.Log(dico1?[FishNames.DosBleu]);
         Debug.Log(dico1?[FishNames.DosBleu].name);*/
+
     }
     
     /*
@@ -84,12 +92,15 @@ public class RapportManager : MonoBehaviour
     {
         if (Input.GetKeyDown(openRapportKey))
         {
-            ToggleRapport(!rapport.activeSelf);
+            ToggleRapport(!on);
         }
 
-        if (!Input.GetKeyDown(KeyCode.Escape)) return;
+        if (Input.GetKeyDown(KeyCode.Escape)) ToggleRapport(false);
         
-        ToggleRapport(false);
+        if (!on) return; //EXIT si le rapport n'est pas ouvert
+        
+        if(Input.GetKeyDown(KeyCode.UpArrow)) ChangePage(-1);
+        if(Input.GetKeyDown(KeyCode.DownArrow)) ChangePage(1);
     }
 
     /*
@@ -99,8 +110,9 @@ public class RapportManager : MonoBehaviour
     {
         on = open;
         Time.timeScale = 1;
-        rapport.SetActive(on);
-        pages[currentPage].SetActive(on);
+        //rapport.SetActive(on);
+        animator.SetTrigger(on ? "Open" : "Close");
+        //pages[currentPage].SetActive(on);
     }
 
     /*
@@ -113,15 +125,19 @@ public class RapportManager : MonoBehaviour
     
     public void SelectPage(GameObject obj)
     {
-        ActivatePage(int.Parse(obj.name.Replace("Tab", "")));
+        ActivatePage(int.Parse(obj.name.Replace("Tab", "")) - 1);
     }
 
     public void ActivatePage(int pageNumber)
     {
-        pages[currentPage].SetActive(false);
-        tabs[currentPage].GetComponent<Image>().sprite = pageNotSelectedImage;
-        currentPage = pageNumber;
+        if(nbPages > 0)
+        {
+            if (pages.Count > currentPage) pages[currentPage].SetActive(false);
+            if (tabs.Count > currentPage) tabs[currentPage].GetComponent<Image>().sprite = pageNotSelectedImage;
+            currentPage = pageNumber % nbPages;
+        }
         pages[currentPage].SetActive(true);
+        tabs[currentPage].SetActive(true);
         tabs[currentPage].GetComponent<Image>().sprite = pageSelectedImage;
     }
 
@@ -131,7 +147,8 @@ public class RapportManager : MonoBehaviour
     public void CloseCurrentPage()
     {
         Time.timeScale = 1;
-        rapport.SetActive(false);
+        animator.SetTrigger("Close");
+        //rapport.SetActive(false);
     }
 
     /*
@@ -140,7 +157,8 @@ public class RapportManager : MonoBehaviour
     public void OpenCurrentPage()
     {
         //Time.timeScale = 0;
-        rapport.SetActive(true);
+        animator.SetTrigger("Open");
+        //rapport.SetActive(true);
     }
 
     /*
@@ -152,16 +170,39 @@ public class RapportManager : MonoBehaviour
         return images.FirstOrDefault(image => image.name == "Photo");
     }
 
+    private TMP_InputField GetName(int nb = -1)
+    {
+        if (nb == -1) nb = currentPage;
+        return pages[currentPage].transform.Find("Name").GetComponent<TMP_InputField>();
+    }
+
+    private TMP_InputField GetNotes(int nb = -1)
+    {
+        if (nb == -1) nb = currentPage;
+        return pages[currentPage].transform.Find("Notes").GetComponent<TMP_InputField>();
+    }
+
+    private TMP_Dropdown GetRegime(int nb = -1)
+    {
+        if (nb == -1) nb = currentPage;
+        return pages[currentPage].transform.Find("Regime").GetComponent<TMP_Dropdown>();
+    }
+    
+    private TextMeshProUGUI GetInfo(int nb = -1)
+    {
+        if (nb == -1) nb = currentPage;
+        return pages[currentPage].transform.Find("Info").GetComponent<TextMeshProUGUI>();
+    }
+
     /*
      * fonction qui affiche/désactive le petit "+" qui indique que la page est vide
      */
     public void FillPage()
     {
-        var pageTransform = pages[currentPage].transform;
-        var fill = pageTransform.Find("Photo").GetComponent<Image>().sprite ||
-                   pageTransform.Find("Name").GetComponent<TMP_InputField>().text != "" ||
-                   pageTransform.Find("Notes").GetComponent<TMP_InputField>().text != "" ||
-                   pageTransform.Find("Regime").GetComponent<TMP_Dropdown>().value != 0;
+        var fill = GetCurrentPageImage().sprite ||
+                   GetName().text != "" ||
+                   GetNotes().text != "" ||
+                   GetRegime().value != 0;
         tabs[currentPage].transform.GetChild(0).gameObject.SetActive(!fill);
         Debug.Log("fill");
     }
@@ -182,5 +223,46 @@ public class RapportManager : MonoBehaviour
     public void OnContentDeselect(string text)
     {
         Time.timeScale = 1;
+    }
+
+    public void AddPage(Fish fish)
+    {
+        nbPages++;
+        
+        var child = rapport.transform;
+        
+        var newPage = Instantiate(child.GetChild(0).gameObject, child);
+        newPage.name = "Page" + nbPages;
+        pages.Add(newPage);
+        fishPage.Add(newPage, Fish.GetFishEnumFromFish(fish));
+        
+        var tabsParent = child.GetChild(child.childCount - 2);
+        tabsParent.SetSiblingIndex(child.childCount - 1);
+        
+        var newTab = Instantiate(tabsParent.GetChild(1).gameObject, tabsParent);
+        newTab.name = "Tab" + nbPages;
+        tabs.Add(newTab);
+        
+        tabsParent.GetChild(tabsParent.childCount - 2).SetSiblingIndex(tabsParent.childCount - 1);
+        
+        ActivatePage(nbPages - 1);
+
+        GetName().placeholder.GetComponent<TextMeshProUGUI>().text = fish.name;
+    }
+
+    public void FillInfo(Fish fish)
+    {
+        if (fishPage[pages[currentPage]] == Fish.GetFishEnumFromFish(fish))
+        {
+            GetInfo().text = "Size: " + fish.size + "\n" +
+                             "Robe: " + fish.robe + "\n" +
+                             "Weight: " + fish.weight + "\n";
+        }
+        else
+        {
+            GetInfo().text = "Size: " + "\n" +
+                             "Robe: " + "\n" +
+                             "Weight: " + "\n";
+        }
     }
 }

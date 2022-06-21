@@ -105,6 +105,8 @@ public class AppareilPhoto : MonoBehaviour
             Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
             picture.sprite = sprite;
             rapport.GetCurrentPageImage().sprite = sprite;
+            DetectFishes();
+            
             /*string path = Application.persistentDataPath + "/fishStructure.json";
             File.WriteAllText(path, JsonConvert.SerializeObject(new Page("DosBleu", 
                 FeedingRegime.Inconnu, "", sprite)));
@@ -120,6 +122,18 @@ public class AppareilPhoto : MonoBehaviour
         GetComponent<Animator>().SetTrigger("TakePicture");
     }
 
+    private void DetectFishes()
+    {
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, Vector2.one, 0, transform.forward);
+        foreach (var hit in hits)
+        {
+            if (hit.collider.CompareTag("Fish"))
+            {
+                PlayerMovement.player.TakePictureFish(hit.collider.GetComponent<DosBleu>().name);
+            }
+        }
+    }
+    
     /*
      * Fonction lancée à la fin de l'animation
      * réactive le rapport et désactive le mode photo

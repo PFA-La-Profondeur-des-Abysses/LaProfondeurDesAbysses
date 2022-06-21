@@ -11,7 +11,12 @@ public class Beacon : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.tag);
+        var script = transform.GetComponentInChildren<Spawner_Destroyer>();
+        if (script)
+        {
+            script.ActivateText();
+            script.GetComponent<BoxCollider2D>().enabled = true;
+        }
         if(other.gameObject.CompareTag("Player"))
         {
             light.color = Color.yellow;

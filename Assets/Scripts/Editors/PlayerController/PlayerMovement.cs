@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Mathematics;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -27,11 +29,15 @@ public class PlayerMovement : MonoBehaviour
     public float axis;
     private Vector3 rotation;
     private int side;
+    private float lookSide;
+    private float lookDirection;
 
     float angleRotationZ;
     float angleRotationY;
 
     private Rigidbody2D rb;
+
+    public static PlayerMovement player;
 
     [Space]
     [Header("Gestion Controlle Mapping ")]
@@ -71,6 +77,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = this;
+        
         rb = gameObject.GetComponent<Rigidbody2D>() as Rigidbody2D;
 
         mappingList = JsonUtility.FromJson<MappingList>(json.text);
@@ -212,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
         * ancien code 
         * 
         */
-        Debug.Log(_moveInput);
+        
         float i = 1;
 
         if (_moveInput.y == 1f || _moveInput.y == -1f)
@@ -225,17 +233,23 @@ public class PlayerMovement : MonoBehaviour
         else axis = Mathf.Lerp(axis, 0, Time.deltaTime * rotationSpeed);
         //quand les touches n'est pas relachée, baisse graduellement la valeur d'axis (simule un inertie)
         angle = Mathf.Clamp(angle + axis, -rotationLimit, rotationLimit);
+        var oldLookSide = lookSide;
         
         if (_moveInput.x == -1f || _moveInput.x == 1f)
         {
-            transform.localScale = new Vector3(_moveInput.x, 1, 1);
+            //transform.localScale = new Vector3(_moveInput.x, 1, 1);
+            //transform.DORotate(new Vector3(transform.rotation.y, _moveInput.x == -1 ? -180 : 0, transform.rotation.z), 0.3f);
             float angleDestination = 0;
             if (_moveInput.y == 1f || _moveInput.y == -1f) 
                 angleDestination = Mathf.Clamp(angle, -30, 25);
             angle = Mathf.Lerp(angle, angleDestination, Time.deltaTime * rotationSpeed * 2);
-        }
 
-        rotation = new Vector3(rotation.x, rotation.y, angle * transform.localScale.x);
+            
+            lookDirection = _moveInput.x == -1 ? -180f : 0f;
+        }
+        lookSide = Mathf.Lerp(oldLookSide, lookDirection, Time.deltaTime * 10);
+
+        rotation = new Vector3(rotation.x, lookSide, angle * transform.localScale.x);
         transform.localRotation = Quaternion.Euler(rotation);
 
         //Quaternion toRoration = Quaternion.LookRotation(Vector3.forward, movementDirection);
@@ -265,6 +279,31 @@ public class PlayerMovement : MonoBehaviour
     public void Turbo()
     {
         speed = startSpeed * turboSpeed;
+    }
+
+    public void SeeFish(FishNames name)
+    {
+        Fish fish = Fish.GetFishFromName(name);
+
+        if (fish.discovered) return; //EXIT si poisson déjà découvert
+        
+        fish.discovered = true;
+        RapportManager.rapportManager.AddPage(fish);
+    }
+
+    public void TakePictureFish(FishNames name)
+    {
+        Fish fish = Fish.GetFishFromName(name);
+
+        if (fish.pictureTaken) return;
+        
+        fish.pictureTaken = true;
+        RapportManager.rapportManager.FillInfo(fish);
+    }
+
+    public void LearnControl(string action)
+    {
+        
     }
 
 

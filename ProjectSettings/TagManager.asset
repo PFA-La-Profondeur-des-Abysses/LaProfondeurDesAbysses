@@ -44,3 +44,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: CavernPlant
+    uniqueID: 2154193209
+    locked: 0
+  - name: UnderwaterParticle
+    uniqueID: 2001881805
+    locked: 0
+  - name: Foreground
+    uniqueID: 1591773485
+    locked: 0

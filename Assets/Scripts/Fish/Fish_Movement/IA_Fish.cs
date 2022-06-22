@@ -15,7 +15,7 @@ public class IA_Fish : MonoBehaviour
     [Header("Fish Info :")]
 
     public FeedingRegime regime;
-    Transform food;
+    public Transform food;
     public bool isEating;
 
     public GameObject canonRaycast;
@@ -127,7 +127,11 @@ public class IA_Fish : MonoBehaviour
             acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
             if (isEating)
             {
-                StartCoroutine(Eat()); 
+                if (this.position == food.position)
+                {
+                    StartCoroutine(Eat());
+                }
+                    
             }
 
         }
@@ -155,7 +159,7 @@ public class IA_Fish : MonoBehaviour
         //check si il y a une future collision et cherche une nouvelle trajectoire sans collision.
         if (isGoingToCollideSomething())
         {
-            Debug.Log("Collision INC.");
+
             Vector3 collisionAvoidDir = ObstacleRays();
             Vector3 collisionAvoidForce = SteerTowards(collisionAvoidDir) * settings.avoidCollisionWeight;
             acceleration += collisionAvoidForce;
@@ -280,7 +284,7 @@ public class IA_Fish : MonoBehaviour
      */
     public Vector2 ObstacleRays()
     {
-        Debug.Log("Calcul Trajectoire");
+
         Vector2[] rayDirection = IA_FishHelper();
 
         for (int i = 0; i < rayDirection.Length; i++)
@@ -370,9 +374,9 @@ public class IA_Fish : MonoBehaviour
                 isEating = false;
             }
         }
-        yield return new WaitForSeconds(0.1f);
-        StartCoroutine(DetectingFood());
+        yield return new WaitForSeconds(0.1f); StartCoroutine(DetectingFood());
     }
+       
 
     
     public IEnumerator Eat()
@@ -397,4 +401,4 @@ public class IA_Fish : MonoBehaviour
 
     
 
-    }
+}

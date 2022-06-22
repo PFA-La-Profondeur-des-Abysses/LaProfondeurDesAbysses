@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Editors/Levels_Blocking/PlaytestRoom.unity
     guid: d14c6feaa00ed094cbab9b24e498e093
+  - enabled: 0
+    path: Assets/Scenes/Editors/Levels_Blocking/LD_Blocking.unity
+    guid: 231717e4fbe7d484db72e36ea5b355d2
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: edc191109760efb4da7ca0b96718e988, type: 2}

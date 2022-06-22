@@ -38,49 +38,6 @@ public class RapportManager : MonoBehaviour
     {
         rapportManager = this;
         animator = GetComponent<Animator>();
-        
-        /*var child = rapport.transform;
-        pages.Add(child.GetChild(0).gameObject);
-        
-        for (var i = 0; i < nbPages - 1; i++)
-        {
-            var newPage = Instantiate(child.GetChild(0).gameObject, child);
-            newPage.name = "Page" + (i + 1);
-            pages.Add(newPage);
-            newPage.SetActive(false);
-        }
-        
-        var tabsParent = child.GetChild(1);
-        tabsParent.SetSiblingIndex(child.childCount - 1);
-        GameObject tab1 = tabsParent.GetChild(1).gameObject;
-        tabs.Add(tab1);
-        
-        for (var i = 0; i < nbPages - 1; i++)
-        {
-            var newTab = Instantiate(tabsParent.GetChild(1).gameObject, tabsParent);
-            newTab.name = "Tab" + (i + 1);
-            tabs.Add(newTab);
-        }
-        tabsParent.GetChild(2).SetSiblingIndex(tabsParent.childCount - 1);
-        tab1.GetComponent<Image>().sprite = pageSelectedImage;*/
-
-        /*Dictionary<FishNames, Fish> dico = new Dictionary<FishNames, Fish>
-        {
-            { FishNames.DosBleu, new Fish("DosBleu", false, false, false) },
-            { FishNames.Sardine, new Fish("Sardine", false, false, false) },
-            { FishNames.Poisson, new Fish("Poisson", false, false, false) },
-            { FishNames.Requin, new Fish("Requin", false, false, false) }
-        };
-        
-        string path = Application.persistentDataPath + "/fishStructure.json";
-        File.WriteAllText(path, JsonConvert.SerializeObject(dico));
-        Debug.Log("chargé" + path);
-        var dico1 = JsonConvert.DeserializeObject<Dictionary<FishNames, Fish>>(File.ReadAllText(path));
-        Debug.Log(dico1);
-        Debug.Log(dico1?.Keys);
-        Debug.Log(dico1?[FishNames.DosBleu]);
-        Debug.Log(dico1?[FishNames.DosBleu].name);*/
-
     }
     
     /*
@@ -92,7 +49,7 @@ public class RapportManager : MonoBehaviour
     {
         if (Input.GetKeyDown(openRapportKey))
         {
-            ToggleRapport(!on);
+            ToggleRapport(!animator.GetBool("Open"));
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) ToggleRapport(false);
@@ -110,9 +67,7 @@ public class RapportManager : MonoBehaviour
     {
         on = open;
         Time.timeScale = 1;
-        //rapport.SetActive(on);
-        animator.SetTrigger(on ? "Open" : "Close");
-        //pages[currentPage].SetActive(on);
+        animator.SetBool("Open", on);
     }
 
     /*
@@ -147,7 +102,7 @@ public class RapportManager : MonoBehaviour
     public void CloseCurrentPage()
     {
         Time.timeScale = 1;
-        animator.SetTrigger("Close");
+        animator.SetBool("Open", false);
         //rapport.SetActive(false);
     }
 
@@ -157,7 +112,7 @@ public class RapportManager : MonoBehaviour
     public void OpenCurrentPage()
     {
         //Time.timeScale = 0;
-        animator.SetTrigger("Open");
+        animator.SetBool("Open", true);
         //rapport.SetActive(true);
     }
 

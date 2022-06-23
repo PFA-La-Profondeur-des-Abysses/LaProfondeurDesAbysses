@@ -47,6 +47,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Player
+    uniqueID: 3077343457
+    locked: 0
+  - name: VolcanPlant
+    uniqueID: 3424148639
+    locked: 0
   - name: CavernPlant
     uniqueID: 2154193209
     locked: 0

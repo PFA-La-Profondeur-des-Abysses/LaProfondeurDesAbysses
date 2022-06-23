@@ -26,6 +26,8 @@ public class IA_Fish : MonoBehaviour
     public float saveForce;
     public FishNames name;
     public bool playerHere;
+
+    public GameObject fishZoneMovement;
     [Space]
 
     public bool getEaten = false;
@@ -132,7 +134,10 @@ public class IA_Fish : MonoBehaviour
         {
             Vector3 acceleration = Vector3.zero;
 
-   
+            if(target == null)
+            {
+                target = fishZoneMovement.transform.GetChild(0);
+            }
 
             GestionRotationFish();
 
@@ -159,12 +164,19 @@ public class IA_Fish : MonoBehaviour
                     }
 
                 }
+
+                else if (Vector3.Distance(transform.position, target.position) < 10f)
+                {
+                    fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
+                    target = fishZoneMovement.transform.GetChild(0);
+                }
                 else
                 {
                     Vector3 offSetToTarget = (target.position - position);
                     acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
                 }
 
+                
             }
 
             //gerer le banc de poisson (si il y en a 1)
@@ -471,4 +483,60 @@ public class IA_Fish : MonoBehaviour
         playerHere = false;
     }
 
+
+    /*
+    public Transform NouvelleTarget()
+    {
+        float topPos = fishZoneMovement.transform.position.y + 5f;
+
+        float bottomPos = fishZoneMovement.transform.position.y - 5f;
+
+
+        float rightPos = fishZoneMovement.transform.position.x - 5f;
+
+        float leftPos = fishZoneMovement.transform.position.x + 5f;
+
+
+
+        foreach(Vector2 p in fishZoneMovement.GetComponent<PolygonCollider2D>().points)
+        {
+            if(p.x > leftPos)
+            {
+                leftPos = p.x;
+            }
+
+            if(p.x < rightPos)
+            {
+                rightPos = p.x;
+            }
+
+            if(p.y > topPos)
+            {
+                topPos = p.y;
+            }
+            if(p.y < bottomPos)
+            {
+                bottomPos = p.y;
+            }
+        }
+
+
+        Vector2 pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
+
+
+
+           
+   
+        while(!fishZoneMovement.GetComponent<Collider2D>().OverlapPoint(pointPos))
+        {
+            pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
+        }
+
+        fishZoneMovement.transform.GetChild(0).position = pointPos;
+
+    
+
+        return fishZoneMovement.transform.GetChild(0);
+    }
+    */
 }

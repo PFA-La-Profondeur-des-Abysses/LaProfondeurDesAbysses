@@ -20,8 +20,8 @@ public class Beacon : MonoBehaviour
 
             if (!nextBeacon) return;
             line.gameObject.SetActive(true);
-            line.SetPosition(0, transform.position);
-            line.SetPosition(1, nextBeacon.transform.position);
+            line.SetPosition(0, transform.GetChild(0).position);
+            line.SetPosition(1, nextBeacon.transform.GetChild(0).position);
             nextBeacon.tag = "Interest";
         }
     }

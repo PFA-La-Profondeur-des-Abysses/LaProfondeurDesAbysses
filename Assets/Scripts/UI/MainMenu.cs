@@ -20,9 +20,9 @@ public class MainMenu : MonoBehaviour
     
     public void Play()
     {
+        button.onClick.RemoveAllListeners();
         fadeIn.SetTrigger("FadeIn");
         StartCoroutine(LoadGameScene());
-        button.onClick.RemoveAllListeners();
     }
 
     private IEnumerator LoadGameScene()

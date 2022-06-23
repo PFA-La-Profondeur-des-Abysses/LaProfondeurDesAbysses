@@ -18,6 +18,8 @@ public class Sonar : MonoBehaviour
 
     private AudioSource sfx;
 
+    public List<Sprite> sprites;
+
     void Start()
     {
         player = transform.GetComponentInParent<PlayerMovement>().transform;
@@ -75,7 +77,7 @@ public class Sonar : MonoBehaviour
             float coordinate = t * speed;
             scan.localScale = new Vector3(coordinate, coordinate, 1);
             t += Time.deltaTime;
-            scanningTime = 1f;
+            scanningTime = 3f;
             yield return null;
         }
         StartCoroutine(ActivateCircle());
@@ -98,8 +100,12 @@ public class Sonar : MonoBehaviour
         newLight.SetActive(true);
         
         StartCoroutine(FollowTarget(newLight, target));
-        if(target.name.Contains("Beacon")) 
-            newLight.transform.GetChild(0).GetComponent<Light2D>().color = Color.yellow;
+        if (target.name.Contains("Beacon"))
+            newLight.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprites[2];
+            //newLight.transform.GetChild(0).GetComponent<Light2D>().color = Color.yellow;
+        else if(target.TryGetComponent(out DosBleu fish)) 
+            if(!Fish.GetFishFromName(fish.name).discovered)
+                newLight.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprites[1];
         lights.Add(newLight);
         float t = 0;
         while (t < 1f)
@@ -107,7 +113,7 @@ public class Sonar : MonoBehaviour
             float coordinate = t * 4f;
             newLight.transform.GetChild(0).localPosition = new Vector3(coordinate, 0, 0);
             t += Time.deltaTime;
-            scanningTime = 1.5f;
+            scanningTime = 3f;
             yield return null;
         }
         newLight.transform.GetChild(0).localPosition = new Vector3(4, 0, 0);
@@ -119,6 +125,7 @@ public class Sonar : MonoBehaviour
         {
             if (!newLight) break;
             newLight.transform.right = target.transform.position - transform.position;
+            newLight.transform.GetChild(0).rotation = Quaternion.identity;
             yield return null;
         }
     }
@@ -138,7 +145,7 @@ public class Sonar : MonoBehaviour
                 float coordinate = t * 2f;
                 spotter.localScale = new Vector3(coordinate, coordinate, 1);
                 t += Time.deltaTime;
-                scanningTime = 1.5f;
+                scanningTime = 3f;
                 yield return null;
             }
         }

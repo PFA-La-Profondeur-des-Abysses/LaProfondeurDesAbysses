@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TorchLight : MonoBehaviour
@@ -25,7 +23,8 @@ public class TorchLight : MonoBehaviour
 
         if(Input.GetKeyDown(torchekey))
         {
-            torche.SetActive(!torche.activeSelf);
+            var torchChild = torche.transform.GetChild(0).gameObject;
+            torchChild.SetActive(!torchChild.activeSelf);
             sfx.Play();
         }
     }

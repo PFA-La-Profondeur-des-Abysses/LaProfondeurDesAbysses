@@ -178,6 +178,7 @@ MonoBehaviour:
   fadeIn: {fileID: 1928507767}
   slider: {fileID: 1788155394}
   clickText: {fileID: 1028042233}
+  button: {fileID: 118840930}
 --- !u!114 &26337510
 MonoBehaviour:
   m_ObjectHideFlags: 0

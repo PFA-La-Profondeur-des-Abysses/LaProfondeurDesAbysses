@@ -38,8 +38,10 @@ public class Ia_Fish_Agressif : IA_Fish
      */
     public Transform Cible()
     {
-        var listEnnemi = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Fish","Player"));
+        var listEnnemi = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Player"));
+        
         Transform ennemiPos;
+
         if(listEnnemi.Length > 0)
         {
             ennemiPos = listEnnemi[0].gameObject.transform;

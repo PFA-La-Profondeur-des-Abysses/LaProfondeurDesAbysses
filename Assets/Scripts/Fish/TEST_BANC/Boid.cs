@@ -127,7 +127,7 @@ public class Boid : MonoBehaviour {
 
     void OnSceneGUI()
     {
-        UnityEditor.Handles.DrawWireDisc(GetComponent<Collider>().transform.position, Vector3.back, settings.collisionAvoidDst);
+        //UnityEditor.Handles.DrawWireDisc(GetComponent<Collider>().transform.position, Vector3.back, settings.collisionAvoidDst);
     }
 
 

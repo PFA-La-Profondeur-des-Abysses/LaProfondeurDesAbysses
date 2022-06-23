@@ -220,4 +220,14 @@ public class RapportManager : MonoBehaviour
                              "Weight: " + "\n";
         }
     }
+
+    public void DeselectEverything()
+    {
+        GetName().gameObject.SetActive(false);
+        GetNotes().gameObject.SetActive(false);
+        GetRegime().gameObject.SetActive(false);
+        GetName().gameObject.SetActive(true);
+        GetNotes().gameObject.SetActive(true);
+        GetRegime().gameObject.SetActive(true);
+    }
 }

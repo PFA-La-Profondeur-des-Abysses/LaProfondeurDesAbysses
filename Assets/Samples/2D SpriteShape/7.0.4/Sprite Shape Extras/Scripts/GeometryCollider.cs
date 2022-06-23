@@ -73,7 +73,7 @@ namespace SpriteShapeExtras
                         indexCount += geomArray[u].indexCount;
                     }
                 }
-                Debug.Log(go.name + " : " + counter);
+
                 OuterEdges(polyCollider, indexArrayLocal, posArray, indexCount);
             }
         }

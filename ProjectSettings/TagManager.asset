@@ -9,6 +9,7 @@ TagManager:
   - Fish
   - Herbivore
   - Carnivore
+  - Cachette
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Food
   - ColliderFish
   - Fish
-  - 
+  - PointDeFuite
   - 
   - 
   - 

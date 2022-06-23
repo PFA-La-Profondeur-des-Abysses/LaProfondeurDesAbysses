@@ -20,13 +20,14 @@ public class MainMenu : MonoBehaviour
     
     public void Play()
     {
+        button.onClick.RemoveAllListeners();
         fadeIn.SetTrigger("FadeIn");
         StartCoroutine(LoadGameScene());
-        button.onClick.RemoveAllListeners();
     }
 
     private IEnumerator LoadGameScene()
     {
+        yield return new WaitForSeconds(1f);
         Time.timeScale = 0;
         var loading = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         while (!loading.isDone)

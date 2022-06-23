@@ -106,17 +106,6 @@ public class AppareilPhoto : MonoBehaviour
             picture.sprite = sprite;
             rapport.GetCurrentPageImage().sprite = sprite;
             DetectFishes();
-            
-            /*string path = Application.persistentDataPath + "/fishStructure.json";
-            File.WriteAllText(path, JsonConvert.SerializeObject(new Page("DosBleu", 
-                FeedingRegime.Inconnu, "", sprite)));
-
-            string str = File.ReadAllText(path);
-            Page page = JsonConvert.DeserializeObject<Page>(str);
-            sprite = page.picture;
-            yield return null;
-            picture.sprite = sprite;
-            rapport.GetCurrentPageImage().sprite = sprite;*/
         }
         cam.gameObject.SetActive(false);
         GetComponent<Animator>().SetTrigger("TakePicture");

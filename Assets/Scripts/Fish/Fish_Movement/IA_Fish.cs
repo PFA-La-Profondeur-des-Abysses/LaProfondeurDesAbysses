@@ -17,8 +17,19 @@ public class IA_Fish : MonoBehaviour
     public FeedingRegime regime;
     public Transform food;
     public bool isEating;
+    public bool isStoppedToEat;
 
     public GameObject canonRaycast;
+    public float runToTargetSpeed = 2f;
+    
+    [Space]
+    public float force;
+    public float saveForce;
+    public FishNames name;
+    public bool playerHere;
+    [Space]
+
+    public bool getEaten = false;
 
     [Space]
     [HideInInspector]
@@ -27,7 +38,6 @@ public class IA_Fish : MonoBehaviour
     public Vector3 right;
     public Vector3 velocity;
 
-    
 
     // Variables we will have to update 
     [HideInInspector]
@@ -93,7 +103,9 @@ public class IA_Fish : MonoBehaviour
         timerTarget = 0f;
 
         spawnPoint = Instantiate(spawnPointPrefab, transform.position, transform.rotation);
-     
+
+        getEaten = false;
+        saveForce = force;
     }
     /*
     void Start()
@@ -117,74 +129,117 @@ public class IA_Fish : MonoBehaviour
      */
     public void Moving()
     {
-        Vector3 acceleration = Vector3.zero;
-
-       // GestionRotationFish();
-
-        if (target != null)
+        if(!getEaten || isStoppedToEat) // paralise le poisson si il se fait manger pour eviter des bugs
         {
-            Vector3 offSetToTarget = (target.position - position);
-            acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
-            if (isEating)
+            Vector3 acceleration = Vector3.zero;
+
+   
+
+            GestionRotationFish();
+
+            if (target != null)
             {
-                if (this.position == food.position)
+
+                if (isEating)
                 {
-                    StartCoroutine(Eat());
+                    if (Vector3.Distance(this.position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
+                    {
+
+                        StartCoroutine(Eat());
+
+                    }
+                    else if(Vector3.Distance(this.position, food.position) < 1)
+                    {
+
+                        StartCoroutine(Eat());
+                    }
+                    else
+                    {
+                        Vector3 offSetToTarget = (target.position - position);
+                        acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
+                    }
+
                 }
-                    
+                else
+                {
+                    Vector3 offSetToTarget = (target.position - position);
+                    acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
+                }
+
             }
 
+            //gerer le banc de poisson (si il y en a 1)
+            if (numPerceivedFlockMates != 0)
+            {
+                centreOfFlockMates = position;
+                averageAvoidanceHeading = transform.right;
+                averageFlockHeading = right;
+
+                centreOfFlockMates /= numPerceivedFlockMates;
+
+                Vector3 offsetToFlockmatesCentre = (centreOfFlockMates - position);
+
+                var alignmentForce = SteerTowards(averageFlockHeading) * settings.alignWeight;
+                var cohesionForce = SteerTowards(offsetToFlockmatesCentre) * settings.cohesionWeight;
+                var seperationForce = SteerTowards(averageAvoidanceHeading) * settings.separateWeight;
+
+                acceleration += alignmentForce;
+                acceleration += cohesionForce;
+                acceleration += seperationForce;
+            }
+
+            //check si il y a une future collision et cherche une nouvelle trajectoire sans collision.
+            if (isGoingToCollideSomething())
+            {
+
+                Vector3 collisionAvoidDir = ObstacleRays();
+                Vector3 collisionAvoidForce = SteerTowards(collisionAvoidDir) * settings.avoidCollisionWeight;
+                acceleration += collisionAvoidForce;
+
+            }
+            //setup direction, vitesse -> le deplacement
+
+            //Setup de la velocité, vitesse...
+
+
+            if (isEating && Vector3.Distance(this.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
+            {
+
+                StartCoroutine(Eat());
+
+            }
+            else
+            {
+                if (target != null)
+                {
+                    velocity += new Vector3(acceleration.x * Time.deltaTime, acceleration.y * Time.deltaTime, 0) * runToTargetSpeed;
+
+                }
+                else
+                {
+                    velocity += new Vector3(acceleration.x * Time.deltaTime, acceleration.y * Time.deltaTime, 0);
+                }
+
+
+                float speed = velocity.magnitude;
+
+                Vector3 dir = velocity / speed;
+
+                speed = Mathf.Clamp(speed, settings.minSpeed, settings.maxSpeed);
+                velocity = dir * speed;
+
+                this.cachedTransform.position += velocity * Time.deltaTime;
+                //this.cachedTransform.forward = dir;
+                this.cachedTransform.right = dir;
+
+                this.position = cachedTransform.position;
+
+                //this.forward = dir;
+                this.right = dir;
+            }
+
+
         }
-
-        //gerer le banc de poisson (si il y en a 1)
-        if (numPerceivedFlockMates != 0)
-        {
-            centreOfFlockMates = position;
-            averageAvoidanceHeading = transform.right;
-            averageFlockHeading = right;
-
-            centreOfFlockMates /= numPerceivedFlockMates;
-
-            Vector3 offsetToFlockmatesCentre = (centreOfFlockMates - position);
-
-            var alignmentForce = SteerTowards(averageFlockHeading) * settings.alignWeight;
-            var cohesionForce = SteerTowards(offsetToFlockmatesCentre) * settings.cohesionWeight;
-            var seperationForce = SteerTowards(averageAvoidanceHeading) * settings.separateWeight;
-
-            acceleration += alignmentForce;
-            acceleration += cohesionForce;
-            acceleration += seperationForce;
-        }
-
-        //check si il y a une future collision et cherche une nouvelle trajectoire sans collision.
-        if (isGoingToCollideSomething())
-        {
-
-            Vector3 collisionAvoidDir = ObstacleRays();
-            Vector3 collisionAvoidForce = SteerTowards(collisionAvoidDir) * settings.avoidCollisionWeight;
-            acceleration += collisionAvoidForce;
-            
-        }
-        //setup direction, vitesse -> le deplacement
-   
-        //Setup de la velocité, vitesse...
-        velocity += new Vector3(acceleration.x * Time.deltaTime,acceleration.y * Time.deltaTime,0);
-
-        float speed = velocity.magnitude;
-
-        Vector3 dir =  velocity / speed;
-
-        speed = Mathf.Clamp(speed, settings.minSpeed, settings.maxSpeed);
-        velocity = dir * speed;
-
-        this.cachedTransform.position += velocity * Time.deltaTime;
-        //this.cachedTransform.forward = dir;
-        this.cachedTransform.right = dir;
-
-        this.position = cachedTransform.position;
-
-        //this.forward = dir;
-        this.right = dir;
 
     }
 
@@ -228,16 +283,16 @@ public class IA_Fish : MonoBehaviour
     public void GestionRotationFish()
     {
 
-        if (transform.rotation.z < 90 && transform.rotation.z > -90)
+        if (right.x > 0)
         {
-            Debug.Log("positif y");
-            this.transform.localScale = new Vector3(-0.34f, 0.34f, 0.34f);
+
+            this.transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
-        if (transform.rotation.z > 90 || transform.rotation.z < -90)
+        if (right.x < 0)
         {
-            Debug.Log("Negatif Y");
-            this.transform.localScale = new Vector3(-0.34f, -0.34f, 0.34f);
+
+            this.transform.localScale = new Vector3(1f, -1f, 1f);
         }
     }
 
@@ -259,14 +314,14 @@ public class IA_Fish : MonoBehaviour
      */
     public bool isGoingToCollideSomething()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(canonRaycast.transform.position,settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity,  Mathf.Infinity);
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position,settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity,  Mathf.Infinity);
 
         Debug.DrawRay(canonRaycast.transform.position, right * settings.collisionAvoidDst, Color.green);
 
         if (hit)
         {
-            Debug.Log(hit.collider.gameObject.name);
-            Debug.DrawRay(canonRaycast.transform.position, right * settings.collisionAvoidDst, Color.red);
+
+            Debug.DrawRay(transform.position, right * settings.collisionAvoidDst, Color.red);
             return true;
         }
         else
@@ -291,7 +346,7 @@ public class IA_Fish : MonoBehaviour
         {
             Vector2 dir = cachedTransform.TransformDirection(rayDirection[i]);
 
-            RaycastHit2D hit = Physics2D.CircleCast(canonRaycast.transform.position, settings.avoidanceRadius, dir, settings.collisionAvoidDst, settings.obstacleMask);
+            RaycastHit2D hit = Physics2D.CircleCast(transform.position, settings.avoidanceRadius, dir, settings.collisionAvoidDst, settings.obstacleMask);
 
             if (!hit)
             {
@@ -352,15 +407,16 @@ public class IA_Fish : MonoBehaviour
         return directions;
     }
 
-    public IEnumerator DetectingFood()
+    public  IEnumerator DetectingFood()
     {
+        
         var particles = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Food"));
         {
             if(particles.Length > 0)
             {
-                foreach(var particule in particles.Where(particles => particles.gameObject.CompareTag(regime.ToString())))
+                foreach(var particule in particles)//.Where(particles => particles.gameObject.CompareTag(regime.ToString()))
                 {
-                    if(particule.tag == regime.ToString())//useless ^^' pour le moment
+                    if(particule.tag == regime.ToString() || regime.ToString() == FeedingRegime.Omnivore.ToString())
                     {
                         food = particule.transform;
                         target = food;
@@ -381,7 +437,7 @@ public class IA_Fish : MonoBehaviour
     
     public IEnumerator Eat()
     {
-        StartCoroutine(DetectingFood());
+        StopCoroutine(DetectingFood());
         float eatingTime = 1;
         while (eatingTime > 0 && food)
         {
@@ -393,12 +449,27 @@ public class IA_Fish : MonoBehaviour
         { 
             Destroy(food.gameObject);
             target = null;
+            food = null;
+            isEating = false;
+            isStoppedToEat = false;
         }
 
         yield return null;
 
     }
 
-    
+    void OnBecameVisible()
+    {
+        PlayerMovement.player.SeeFish(name);
+        playerHere = true;
+
+        force = saveForce;
+    }
+
+    private void OnBecameInvisible()
+    {
+        force = 99;
+        playerHere = false;
+    }
 
 }

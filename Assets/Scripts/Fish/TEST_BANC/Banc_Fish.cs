@@ -106,7 +106,7 @@ public class Boid : MonoBehaviour {
 
         if (hit.Length > 1)
         {
-            Debug.Log("Collision Avec : " + hit[1].collider.gameObject.name);
+
             Debug.DrawRay(canonRaycast.transform.position, right * settings.collisionAvoidDst, Color.red);
             return true;
         
@@ -135,7 +135,7 @@ public class Boid : MonoBehaviour {
 
         Vector3[] rayDirections = BoidHelper();
         
-        Debug.Log("Bug ici : " + rayDirections);
+
 
         for (int i = 0; i < rayDirections.Length; i++) 
         {

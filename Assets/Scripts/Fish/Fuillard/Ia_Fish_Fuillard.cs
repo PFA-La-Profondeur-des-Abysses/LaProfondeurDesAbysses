@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ia_Fish_Fuillard : IA_Fish
 {
     public List<GameObject> PointDeFuite;
-    public bool caché;
+    public bool hidden;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +16,7 @@ public class Ia_Fish_Fuillard : IA_Fish
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!caché)
+        if (!hidden)
         {
             Fuite();
             Moving();
@@ -24,12 +24,12 @@ public class Ia_Fish_Fuillard : IA_Fish
             {
                 if (Vector3.Distance(transform.position, target.gameObject.transform.position) < 3)
                 {
-                    caché = true;
+                    hidden = true;
                 }
             }
         }
 
-        if (caché)
+        if (hidden)
         {
             var objectAFuir = Physics2D.OverlapCircleAll(transform.position, 30, LayerMask.GetMask("Player"));
             if (objectAFuir.Length > 0)
@@ -38,14 +38,14 @@ public class Ia_Fish_Fuillard : IA_Fish
             }
             else
             {
-                caché = false;
+                hidden = false;
                 target = spawnPoint.transform;
             }
         }
     }
 
     /*
-     * Fonction cherchant dans la liste de point de fuite, le point de fuite le plus éloigné 
+     * Fonction cherchant dans la liste de point de fuite, le point de fuite le plus ï¿½loignï¿½ 
      * du danger que le poisson doit fuire et le rejoindre au plus vite 
      */
     public void Fuite()
@@ -89,7 +89,7 @@ public class Ia_Fish_Fuillard : IA_Fish
     }
 
     /*
-     * Fonction qui défini si oui ou non le poisson doit fult 
+     * Fonction qui dï¿½fini si oui ou non le poisson doit fult 
      */ 
     public bool doitFuir() 
     {

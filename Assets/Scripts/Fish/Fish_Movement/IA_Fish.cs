@@ -18,8 +18,7 @@ public class IA_Fish : MonoBehaviour
     public Transform food;
     public bool isEating;
     public bool isStoppedToEat;
-
-    public GameObject canonRaycast;
+    
     public float runToTargetSpeed = 2f;
     
     [Space]
@@ -199,7 +198,7 @@ public class IA_Fish : MonoBehaviour
             }
             //setup direction, vitesse -> le deplacement
 
-            //Setup de la velocité, vitesse...
+            //Setup de la velocitÃ©, vitesse...
 
 
             if (isEating && Vector3.Distance(this.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
@@ -309,32 +308,32 @@ public class IA_Fish : MonoBehaviour
     }
 
     /*
-     * Fonction lançant un raycast devant le poisson afin de detecter une collision
+     * Fonction lanÃ§ant un raycast devant le poisson afin de detecter une collision
      *
      */
     public bool isGoingToCollideSomething()
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position,settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity,  Mathf.Infinity);
 
-        Debug.DrawRay(canonRaycast.transform.position, right * settings.collisionAvoidDst, Color.green);
+        //Debug.DrawRay(canonRaycast.transform.position, right * settings.collisionAvoidDst, Color.green);
 
         if (hit)
         {
 
-            Debug.DrawRay(transform.position, right * settings.collisionAvoidDst, Color.red);
+            //Debug.DrawRay(transform.position, right * settings.collisionAvoidDst, Color.red);
             return true;
         }
         else
         {
 
         }
-        return false; // au cas où :)
+        return false; // au cas oÃ¹ :)
     }
 
     
     /*
-     * Fontion permettant de trouver la première direction que le poisson peut prendre
-     * qui ne possède pas de collision à la fin
+     * Fontion permettant de trouver la premiÃ¨re direction que le poisson peut prendre
+     * qui ne possÃ¨de pas de collision Ã  la fin
      * 
      */
     public Vector2 ObstacleRays()
@@ -359,7 +358,7 @@ public class IA_Fish : MonoBehaviour
 
 
     /*
-     * Fonction permettant de calculer les direction des différents raycast a tirer afin d'éviter une collision.
+     * Fonction permettant de calculer les direction des diffÃ©rents raycast a tirer afin d'Ã©viter une collision.
      * 
      */
     public Vector2[] IA_FishHelper()

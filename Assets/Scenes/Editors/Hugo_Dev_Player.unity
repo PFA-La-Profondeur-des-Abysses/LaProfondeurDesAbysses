@@ -4754,6 +4754,14 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7564028242691188134, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028242691188134, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028242691188134, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
@@ -4800,6 +4808,62 @@ PrefabInstance:
     - target: {fileID: 7564028243180252500, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: -71.15396
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
+      value: -41.058533
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
+      value: -36.44699
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
+      value: 31.802917
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 65.33713
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
+      value: 12.668152
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 67.36624
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: -18.26416
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[4].x
+      value: 67.38574
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[4].y
+      value: -55.58496
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[5].x
+      value: 29.222595
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[5].y
+      value: -33.302307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[6].x
+      value: -32.3714
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252506, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[6].y
+      value: -37.22882
       objectReference: {fileID: 0}
     - target: {fileID: 7564028243180252507, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
       propertyPath: m_Name

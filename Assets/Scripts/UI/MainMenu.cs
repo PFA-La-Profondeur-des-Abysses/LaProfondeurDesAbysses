@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator LoadGameScene()
     {
+        yield return new WaitForSeconds(1f);
         Time.timeScale = 0;
         var loading = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         while (!loading.isDone)

@@ -31,12 +31,12 @@ public class FoodManager : MonoBehaviour
     void Update()
     {
         if (Time.timeScale == 0) return; //EXIT si le rapport est utilisé
-        if(Input.GetKeyDown(KeyCode.G) && canThrow)
+        if(Input.GetKeyDown(KeyCode.E) && canThrow)
         {
             food = meat;
             StartCoroutine(ThrowFood());
         }
-        if(Input.GetKeyDown(KeyCode.F) && canThrow)
+        if(Input.GetKeyDown(KeyCode.A) && canThrow)
         {
             food = leaf;
             StartCoroutine(ThrowFood());

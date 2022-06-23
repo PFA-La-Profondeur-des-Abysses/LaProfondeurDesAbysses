@@ -43,19 +43,63 @@ public class Fish
     {
         fishToInfo = new Dictionary<FishNames, Fish>
         {
-            { FishNames.DosBleu, new Fish("DosBleu", "10cm", "bleu", "50kg") },
-            { FishNames.Sardine, new Fish("Sardine", "petit", "gris", "10.5g") },
-            { FishNames.Poisson, new Fish("Poisson", "gros", "écaillé", "36kg") }
+            { FishNames.Anguille, new Fish("Anguille", "gros", "écaillé", "36kg") },
+            { FishNames.Baleine, new Fish("Baleine à corne", "15m", "Grise et taches blanches", "40T") },
+            { FishNames.Seiche, new Fish("Seiche Banane", "50cm", "Jaune et blanche", "2Kg") },
+            { FishNames.Baudroie, new Fish("Baudroie", "20cm", "Brune", "28Kg") },
+            { FishNames.Calarmure, new Fish("Calarmure", "8m", "Rouge", "550Kg") },
+            { FishNames.MilePalme, new Fish("Mile-Palme", "11m", "Rouge et Jaune", "740Kg") },
+            { FishNames.Lancelet, new Fish("Lancelet Comète", "7m", "Bleu", "520Kg") },
+            { FishNames.DosBleu, new Fish("Dos Bleu", "20cm", "argenté à bandes bleues", "50g") },
+            { FishNames.Guirlande, new Fish("Guirlande", "9m", "Brune et translucide", "550Kg") },
+            { FishNames.Hippocorne, new Fish("Hippocorne", "12cm", "Orange", "15g") },
+            { FishNames.LimaceBoa, new Fish("Limace Boa", "1m", "Bleu tacheté de jaune", "5Kg") },
+            { FishNames.Bathypugille, new Fish("Bathypugille", "10cm", "Vert et rouge", "400g") },
+            { FishNames.MeduseAlgue, new Fish("Meduse Algue", "1m", "Translucide", "2Kg") },
+            { FishNames.MeduseAurelia, new Fish("Meduse Aurelia", "25cm", "Translucide", "800g") },
+            { FishNames.MedusePic, new Fish("Meduse à pic", "40cm", "Translucide et rouge", "2Kg") },
+            { FishNames.PoissonBulle, new Fish("Poisson Bulle", "20cm", "Translucide et rose", "1,5Kg") },
+            { FishNames.PoissonChirurgien, new Fish("Poisson Chirurgien", "15cm", "Bleu", "90g") },
+            { FishNames.PoissonClown, new Fish("Poisson Clown", "12cm", "Orange à bandes blanches", "50g") },
+            { FishNames.PoissonPapillon, new Fish("Poisson Papillon", "17cm", "Jaune à bandes bleues", "150g") },
+            { FishNames.GrammaLoretto, new Fish("Gramma Lorette", "8cm", "Jaune et violet", "20g") },
+            { FishNames.Rascasse, new Fish("Rascasse Volante", "40cm", "Brune à bandes blanches", "2,5Kg") },
+            { FishNames.RequinRenard, new Fish("Requin Renard", "5m", "Grise", "500Kg") },
+            { FishNames.RequinThermal, new Fish("Requin Thermal", "6m", "Grise", "1T") },
+            { FishNames.Sardine, new Fish("Sardine", "20cm", "argenté", "30g") },
+            { FishNames.Charybarvus, new Fish("Charybarvus", "17m", "violette", "1T") },
         };
     }
 }
 
 public enum FishNames
 {
+    Anguille,
+    Baleine,
+    Seiche,
+    Baudroie,
+    Calarmure,
+    MilePalme,
+    Lancelet,
     DosBleu,
+    Guirlande,
+    Hippocorne,
+    LimaceBoa,
+    Bathypugille,
+    MeduseAlgue,
+    MeduseAurelia,
+    MedusePic,
+    PoissonBulle,
+    PoissonChirurgien,
+    PoissonClown,
+    PoissonPapillon,
+    GrammaLoretto,
+    Rascasse,
+    RequinRenard,
+    RequinThermal,
     Sardine,
-    Poisson,
-    Requin
+    Charybarvus
+
 }
 
 public enum FeedingRegime

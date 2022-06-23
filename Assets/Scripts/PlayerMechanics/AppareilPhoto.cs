@@ -36,7 +36,7 @@ public class AppareilPhoto : MonoBehaviour
              Input.GetKeyDown(KeyCode.Tab)) && cam.gameObject.activeSelf)
         {
             ClosePhotoMode();
-            rapport.ToggleRapport(true);
+            //rapport.ToggleRapport(true);
         }
         
         if (Input.GetButtonDown("Fire1") && cam.gameObject.activeSelf)
@@ -70,7 +70,7 @@ public class AppareilPhoto : MonoBehaviour
     {
         modeOn = false;
         cam.gameObject.SetActive(modeOn);
-        rapport.OpenCurrentPage();
+        //rapport.OpenCurrentPage();
     }
 
     /*

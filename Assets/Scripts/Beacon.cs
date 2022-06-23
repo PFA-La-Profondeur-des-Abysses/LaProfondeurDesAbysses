@@ -8,15 +8,11 @@ public class Beacon : MonoBehaviour
     public GameObject nextBeacon;
     public Light2D light;
     public LineRenderer line;
+    public Didacticiel didacticiel;
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        var script = transform.GetComponentInChildren<Spawner_Destroyer>();
-        if (script)
-        {
-            script.ActivateText();
-            script.GetComponent<BoxCollider2D>().enabled = true;
-        }
+        if (didacticiel) didacticiel.beaconActivated = true;
         if(other.gameObject.CompareTag("Player"))
         {
             light.color = Color.yellow;

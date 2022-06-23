@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class MainMenu : MonoBehaviour
     public Animator fadeIn;
     public Slider slider;
     public GameObject clickText;
+    public Button button;
 
     void Update()
     {
@@ -20,6 +22,7 @@ public class MainMenu : MonoBehaviour
     {
         fadeIn.SetTrigger("FadeIn");
         StartCoroutine(LoadGameScene());
+        button.onClick.RemoveAllListeners();
     }
 
     private IEnumerator LoadGameScene()

@@ -23,7 +23,7 @@ public class FishSpawner : MonoBehaviour
             Fish_IA fish = Instantiate(prefab);
             fish.transform.position = pos;
             fish.transform.forward = Random.insideUnitCircle;
-            Debug.Log(fish.transform.forward);
+            
 
         }
     }

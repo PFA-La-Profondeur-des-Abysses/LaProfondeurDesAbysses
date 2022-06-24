@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 562263544315366268}
   - component: {fileID: 6607929109071598778}
   - component: {fileID: 3673693999203823177}
-  - component: {fileID: 548411056816793961}
+  - component: {fileID: 8710073382887982204}
   m_Layer: 12
   m_Name: DosBleu
   m_TagString: Fish
@@ -106,8 +106,6 @@ MonoBehaviour:
   timerTargetDurationMax: 5
   timerWaitUntilNextTarget: 0
   timerTarget: 0
-  spawnPointPrefab: {fileID: 0}
-  spawnPoint: {fileID: 0}
   PointDeFuite:
   - {fileID: 0}
   - {fileID: 0}
@@ -205,8 +203,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &548411056816793961
-PolygonCollider2D:
+--- !u!70 &8710073382887982204
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -218,72 +216,6 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 20.48, y: 20.48}
-    newSize: {x: 20.48, y: 20.48}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.04, y: -2.12}
-      - {x: 0.39999998, y: -2.28}
-      - {x: 1.24, y: -2.3999999}
-      - {x: 2.44, y: -2.3999999}
-      - {x: 2.48, y: -2.28}
-      - {x: 2.44, y: -2.12}
-      - {x: 2, y: -1.7199999}
-      - {x: 1.52, y: -1.52}
-      - {x: 2.2, y: -1.4}
-      - {x: 3.08, y: -1.1999999}
-      - {x: 3.6399999, y: -1.16}
-      - {x: 5.04, y: -1.1999999}
-      - {x: 5.2799997, y: -1.36}
-      - {x: 5.7999997, y: -1.5999999}
-      - {x: 5.7999997, y: -1.36}
-      - {x: 6.48, y: -1.68}
-      - {x: 6.72, y: -1.76}
-      - {x: 7.3199997, y: -1.92}
-      - {x: 7.64, y: -1.92}
-      - {x: 7.68, y: -1.8}
-      - {x: 7.6, y: -1.68}
-      - {x: 7.04, y: -1.28}
-      - {x: 6.6, y: -0.79999995}
-      - {x: 6.64, y: -0.48}
-      - {x: 7.2799997, y: 0.12}
-      - {x: 7.72, y: 0.48}
-      - {x: 7.72, y: 0.56}
-      - {x: 7.68, y: 0.68}
-      - {x: 7.2, y: 0.64}
-      - {x: 5.64, y: 0.12}
-      - {x: 3.84, y: 0.59999996}
-      - {x: 2.1599998, y: 1.24}
-      - {x: 1.28, y: 1.92}
-      - {x: 1.04, y: 1.9599999}
-      - {x: 0, y: 1.9599999}
-      - {x: -0.88, y: 1.8399999}
-      - {x: -1.9599999, y: 1.76}
-      - {x: -2.52, y: 1.68}
-      - {x: -3.28, y: 1.52}
-      - {x: -4.04, y: 0.79999995}
-      - {x: -4.48, y: 0.64}
-      - {x: -5.4, y: 0}
-      - {x: -5.92, y: -0.48}
-      - {x: -5.96, y: -0.71999997}
-      - {x: -5.96, y: -1.0799999}
-      - {x: -5.8399997, y: -1.16}
-      - {x: -5.68, y: -1.28}
-      - {x: -5.7999997, y: -1.5999999}
-      - {x: -5.52, y: -1.76}
-      - {x: -5.08, y: -1.92}
-      - {x: -4.52, y: -2.04}
-      - {x: -3.9199998, y: -2.32}
-      - {x: -3.72, y: -2.3999999}
-      - {x: -2.96, y: -2.3999999}
-      - {x: -2.6399999, y: -2.2}
-      - {x: -2.6399999, y: -2.08}
-      - {x: -0.44, y: -1.92}
+  m_Offset: {x: 0.3954409, y: -0.39551222}
+  m_Size: {x: 12.630639, y: 3.9902477}
+  m_Direction: 1

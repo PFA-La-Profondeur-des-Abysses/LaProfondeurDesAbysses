@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +30,7 @@ public class IA_Fish : MonoBehaviour
     public GameObject fishZoneMovement;
     [Space]
 
-    public bool getEaten = false;
+    public bool getEaten;
 
     [Space]
     [HideInInspector]
@@ -139,13 +138,13 @@ public class IA_Fish : MonoBehaviour
 
                 if (isEating && food)
                 {
-                    if (Vector3.Distance(this.position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
+                    if (Vector3.Distance(position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
                     {
 
                         StartCoroutine(Eat());
 
                     }
-                    else if (Vector3.Distance(this.position, food.position) < 1)
+                    else if (Vector3.Distance(position, food.position) < 1)
                     {
 
                         StartCoroutine(Eat());
@@ -182,7 +181,7 @@ public class IA_Fish : MonoBehaviour
 
                 centreOfFlockMates /= numPerceivedFlockMates;
 
-                Vector3 offsetToFlockmatesCentre = (centreOfFlockMates - position);
+                Vector3 offsetToFlockmatesCentre = centreOfFlockMates - position;
 
                 var alignmentForce = SteerTowards(averageFlockHeading) * settings.alignWeight;
                 var cohesionForce = SteerTowards(offsetToFlockmatesCentre) * settings.cohesionWeight;
@@ -207,7 +206,7 @@ public class IA_Fish : MonoBehaviour
             //Setup de la velocité, vitesse...
 
 
-            if (isEating && food && Vector3.Distance(this.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
+            if (isEating && food && Vector3.Distance(position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
             {
 
                 StartCoroutine(Eat());
@@ -233,14 +232,14 @@ public class IA_Fish : MonoBehaviour
                 speed = Mathf.Clamp(speed, settings.minSpeed, settings.maxSpeed);
                 velocity = dir * speed;
 
-                this.cachedTransform.position += velocity * Time.deltaTime;
+                cachedTransform.position += velocity * Time.deltaTime;
                 //this.cachedTransform.forward = dir;
-                this.cachedTransform.right = dir;
+                cachedTransform.right = dir;
 
-                this.position = cachedTransform.position;
+                position = cachedTransform.position;
 
                 //this.forward = dir;
-                this.right = dir;
+                right = dir;
             }
 
 
@@ -291,13 +290,13 @@ public class IA_Fish : MonoBehaviour
         if (right.x > 0)
         {
 
-            this.transform.localScale = startScale;
+            transform.localScale = startScale;
         }
 
         if (right.x < 0)
         {
 
-            this.transform.localScale = new Vector3(startScale.x, -startScale.y, startScale.z);
+            transform.localScale = new Vector3(startScale.x, -startScale.y, startScale.z);
         }
     }
 
@@ -325,13 +324,8 @@ public class IA_Fish : MonoBehaviour
 
         if (hit)
         {
-
             Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.red);
             return true;
-        }
-        else
-        {
-
         }
         return false; // au cas où :)
     }
@@ -374,14 +368,10 @@ public class IA_Fish : MonoBehaviour
 
         Vector2[] directions = new Vector2[numViewDirections];
 
-        float goldenRatio = (1 + Mathf.Sqrt(5)) / 2;
-        float angleIncrement = Mathf.PI * 2 * goldenRatio;
-
         for (int i = 0; i < numViewDirections; i++)
         {
             float t = (float)i / numViewDirections;
             float inclination = Mathf.Acos(1 - 2 * t);
-            float azimuth = angleIncrement * i;
 
             float x = Mathf.Sin(inclination); //anciennemnt azimuth
             float y = Mathf.Cos(inclination); //anciennemnt azimuth
@@ -512,5 +502,3 @@ public class IA_Fish : MonoBehaviour
     }
     */
 }
-
-

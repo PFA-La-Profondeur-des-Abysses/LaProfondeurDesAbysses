@@ -103,7 +103,7 @@ public class Sonar : MonoBehaviour
         if (target.name.Contains("Beacon"))
             newLight.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprites[2];
             //newLight.transform.GetChild(0).GetComponent<Light2D>().color = Color.yellow;
-        else if(target.TryGetComponent(out DosBleu fish)) 
+        else if(target.TryGetComponent(out IA_Fish fish)) 
             if(!Fish.GetFishFromName(fish.name).discovered)
                 newLight.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprites[1];
         lights.Add(newLight);

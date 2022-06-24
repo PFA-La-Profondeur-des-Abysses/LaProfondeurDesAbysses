@@ -118,7 +118,7 @@ public class AppareilPhoto : MonoBehaviour
         {
             if (hit.collider.CompareTag("Fish"))
             {
-                PlayerMovement.player.TakePictureFish(hit.collider.GetComponent<DosBleu>().name);
+                PlayerMovement.player.TakePictureFish(hit.collider.GetComponent<IA_Fish>().name);
             }
         }
     }

@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 12
   m_Name: Anguille
   m_TagString: Fish
-  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -72,8 +72,6 @@ MonoBehaviour:
   timerTargetDurationMax: 5
   timerWaitUntilNextTarget: 0
   timerTarget: 0
-  spawnPointPrefab: {fileID: 0}
-  spawnPoint: {fileID: 0}
 --- !u!212 &4188830733197969834
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -142,7 +140,7 @@ GameObject:
   m_Layer: 12
   m_Name: Fish
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

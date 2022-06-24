@@ -16,7 +16,7 @@ GameObject:
   m_Layer: 12
   m_Name: Calarmure
   m_TagString: Fish
-  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 1080659685433852588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 125.5, y: 87.7, z: 0}
-  m_LocalScale: {x: 1.4066, y: 1.4066, z: 1.4066}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: -1.4066, y: 1.4066, z: 1.4066}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1080659685738875691}
   m_Father: {fileID: 0}
@@ -74,9 +74,7 @@ MonoBehaviour:
   timerTargetDurationMax: 5
   timerWaitUntilNextTarget: 0
   timerTarget: 0
-  PointDeFuite:
-  - {fileID: 0}
-  - {fileID: 0}
+  PointDeFuite: []
   hidden: 0
 --- !u!212 &2227352715744930568
 SpriteRenderer:
@@ -183,7 +181,7 @@ GameObject:
   m_Layer: 12
   m_Name: FishFuillard
   m_TagString: Fish
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

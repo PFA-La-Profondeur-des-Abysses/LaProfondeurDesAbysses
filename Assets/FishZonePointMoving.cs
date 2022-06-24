@@ -15,9 +15,12 @@ public class FishZonePointMoving : MonoBehaviour
     public float leftPos;
     public List<Vector2> listPoints;
 
+    public bool seachingNewPos;
+    public Collider2D collider;
+
     public void Start()
     {
-
+        seachingNewPos = false;
         foreach (Vector2 p in transform.parent.gameObject.GetComponent<PolygonCollider2D>().points)
         {
 
@@ -46,52 +49,54 @@ public class FishZonePointMoving : MonoBehaviour
             }
         }
 
-        startPos = transform.position;
+        startPos = transform.localPosition;
+
+
+
+
 
         newPointPos();
     }
-    private void Update()
+    private void FixedUpdate()
     {
-        
-    }
-     
-    public void newPointPos()
-    {
-
-
-        Vector3 oldPos = transform.localPosition;
-        /*
-        
-        */
-
-
-        Vector2 pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
-
-
-
-        transform.position = startPos;
-
-        int i = 0;
-        while(transform.parent.gameObject.GetComponent<Collider2D>().OverlapPoint(pointPos))
+        if(seachingNewPos)
         {
-            pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
-            i++;
-            if(i>200)
+            Vector2 pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
+            transform.localPosition = pointPos;
+
+            collider = Physics2D.OverlapCircle(pointPos, 2f);
+
+            if (collider != null && transform.GetComponentInParent<Collider2D>() == collider)
             {
-                break;
+                seachingNewPos = false;
             }
         }
+    }
 
-        Debug.Log(pointPos);
-        transform.localPosition = pointPos;
+    public void newPointPos()
+    {
+        seachingNewPos = true;
+    }
 
-        if (transform.position == oldPos)
+    /*
+     * Check Si l'object est dans le collider du parent.
+     */
+    public bool isIN(Vector2 v)
+    {
+        Debug.Log("Chekcing ");
+
+        collider = Physics2D.OverlapCircle(v, 2f);
+
+        if (collider != null && transform.GetComponentInParent<Collider2D>() == collider)
         {
-            transform.position = startPos;
+            Debug.Log("IT IS IN");
+            return true;
         }
+        else
+        {
 
-
-        
-
+        }
+        return false;
     }
 }
+

@@ -113,23 +113,9 @@ public class IA_Fish : MonoBehaviour
         getEaten = false;
         saveForce = force;
     }
-    /*
-    void Start()
-    {
-        StartCoroutine(DetectingFood());
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-       
 
 
-        Moving();
-       
-    }
-
-    */
+    
     /*
      * Fonction de deplacement  
      */
@@ -174,7 +160,6 @@ public class IA_Fish : MonoBehaviour
                 else if (Vector3.Distance(transform.position, target.position) < 10f)
                 
                     {
-                    Debug.Log("Arrived");
                    // fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
                     target = fishZoneMovement.transform.GetChild(0);
                 }
@@ -384,7 +369,7 @@ public class IA_Fish : MonoBehaviour
     public Vector2[] IA_FishHelper()
     {
 
-        const int numViewDirections = 300;
+        const int numViewDirections = 100;
 
         Vector2[] directions = new Vector2[numViewDirections];
         

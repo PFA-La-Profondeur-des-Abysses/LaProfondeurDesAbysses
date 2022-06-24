@@ -50,6 +50,7 @@ public class Ia_Fish_Fuillard : IA_Fish
      */
     public void Fuite()
     {
+        if (PointDeFuite.Count == 0) return;
         GameObject lePlusProche;
         if(doitFuir())
         {

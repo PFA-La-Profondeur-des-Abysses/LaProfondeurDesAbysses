@@ -54,7 +54,7 @@ public class Didacticiel : MonoBehaviour
                 Activate();
                 break;
             case 3:
-                if(!(Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.G))) return;
+                if(!(Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.A))) return;
                 if (!IsPlayerNear()) return;
                 
                 StartCoroutine(Deactivate(3, 2));
@@ -94,7 +94,7 @@ public class Didacticiel : MonoBehaviour
                 Activate();
                 break;
             case 8:
-                if(!Input.GetKeyDown(KeyCode.L)) return;
+                if(!Input.GetKeyDown(KeyCode.F)) return;
                 
                 Deactivate();
                 ActivateControl(5);

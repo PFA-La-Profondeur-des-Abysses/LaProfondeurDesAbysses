@@ -47,6 +47,8 @@ public class RapportManager : MonoBehaviour
      */
     void Update()
     {
+        if (nbPages == 0) return;
+        
         if (Input.GetKeyDown(openRapportKey))
         {
             ToggleRapport(!animator.GetBool("Open"));

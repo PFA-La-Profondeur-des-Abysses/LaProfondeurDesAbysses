@@ -66,8 +66,13 @@ public class IA_Fish : MonoBehaviour
     public GameObject spawnPointPrefab;
     public GameObject spawnPoint;
 
+
+    private Vector3 startScale;
+
     void Awake()
     {
+        startScale = transform.localScale;
+        Debug.Log(transform.rotation.eulerAngles);
         forward = transform.forward;
 
         right = transform.right;
@@ -144,7 +149,7 @@ public class IA_Fish : MonoBehaviour
             if (target != null)
             {
 
-                if (isEating)
+                if (isEating && food)
                 {
                     if (Vector3.Distance(this.position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
                     {
@@ -213,7 +218,7 @@ public class IA_Fish : MonoBehaviour
             //Setup de la velocité, vitesse...
 
 
-            if (isEating && Vector3.Distance(this.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
+            if (isEating && food && Vector3.Distance(this.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
             {
 
                 StartCoroutine(Eat());
@@ -297,13 +302,13 @@ public class IA_Fish : MonoBehaviour
         if (right.x > 0)
         {
 
-            this.transform.localScale = new Vector3(1f, 1f, 1f);
+            this.transform.localScale = startScale;
         }
 
         if (right.x < 0)
         {
 
-            this.transform.localScale = new Vector3(1f, -1f, 1f);
+            this.transform.localScale = new Vector3(startScale.x, -startScale.y, startScale.z);
         }
     }
 

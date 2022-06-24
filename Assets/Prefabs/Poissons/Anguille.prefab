@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3571354447693577299}
   - component: {fileID: 4188830733197969834}
   m_Layer: 12
-  m_Name: Sardine (1)
+  m_Name: Anguille
   m_TagString: Fish
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

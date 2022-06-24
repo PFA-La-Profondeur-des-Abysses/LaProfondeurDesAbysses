@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff9d4d57bbd3a74a9f862f31b49bbd6, type: 3}
+  m_Script: {fileID: 11500000, guid: b7aca4792eeebfd4faa13613803714de, type: 3}
   m_Name: Sardine
   m_EditorClassIdentifier: 
-  minSpeed: 10
-  maxSpeed: 15
+  minSpeed: 5
+  maxSpeed: 10
   perceptionRadius: 3
   avoidanceRadius: 5
   maxSteerForce: 8
@@ -24,6 +24,6 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 2304
-  boundsRadius: 0.1
+  boundsRadius: 0.2
   avoidCollisionWeight: 5
-  collisionAvoidDst: 20
+  collisionAvoidDst: 25

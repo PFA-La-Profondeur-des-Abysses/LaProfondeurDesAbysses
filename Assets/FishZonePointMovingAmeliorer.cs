@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FishZonePointMoving : MonoBehaviour
+public class FishZonePointMovingAmeliorer : MonoBehaviour
 {
     public Vector3 startPos;
     public float topPos;
@@ -51,16 +51,14 @@ public class FishZonePointMoving : MonoBehaviour
 
         startPos = transform.localPosition;
 
+        newPos();
 
-
-
-
-        newPointPos();
     }
     private void FixedUpdate()
     {
-        if (seachingNewPos)
-        {
+
+        if(seachingNewPos)
+        {/*
             Vector2 pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
             transform.localPosition = pointPos;
 
@@ -69,14 +67,61 @@ public class FishZonePointMoving : MonoBehaviour
             if (collider != null && transform.GetComponentInParent<Collider2D>() == collider)
             {
                 seachingNewPos = false;
-            }
+            }*/
+
+           // newPos();
         }
+
+
     }
 
     public void newPointPos()
     {
         seachingNewPos = true;
     }
+
+    public void newPos()
+    {
+
+        Vector2[] tabVector = new Vector2[20];
+
+        for(int i = 0; i < 20; i++)
+        {
+            tabVector[i] = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
+
+        }
+
+        foreach(Vector2 v in tabVector)
+        {
+            transform.localPosition = v;
+            collider = Physics2D.OverlapCircle(transform.position, 3f);
+
+            if(collider!=null)  Debug.Log(collider.gameObject.name);
+
+            if (collider != null && transform.GetComponentInParent<Collider2D>() == collider)
+            {
+
+                Debug.Log("New Pos ! " + v + " old : " + startPos);
+                transform.localPosition = v;
+                seachingNewPos = false;
+                break;
+            }
+        }
+
+
+        collider = Physics2D.OverlapCircle(transform.position, 3f);
+
+        if (collider == null || transform.GetComponentInParent<Collider2D>() != collider)
+        {
+
+            transform.localPosition = startPos;
+
+        }
+    }
+
+
+
+
 
     /*
      * Check Si l'object est dans le collider du parent.

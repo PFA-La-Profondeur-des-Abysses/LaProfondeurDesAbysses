@@ -5561,7 +5561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3460950902021360108, guid: fddce35867df26243ad06bf30df803ab, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3460950902021360109, guid: fddce35867df26243ad06bf30df803ab, type: 3}
       propertyPath: force
@@ -6479,7 +6479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7564028242691188128, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7564028242691188129, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
       propertyPath: m_Enabled
@@ -6628,6 +6628,10 @@ PrefabInstance:
     - target: {fileID: 7564028243180252507, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564028243180252507, guid: 430acefd61318a94bb2778f9a473a002, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 430acefd61318a94bb2778f9a473a002, type: 3}

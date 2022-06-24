@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,9 +19,9 @@ public class IA_Fish : MonoBehaviour
     public Transform food;
     public bool isEating;
     public bool isStoppedToEat;
-    
+
     public float runToTargetSpeed = 2f;
-    
+
     [Space]
     public float force;
     public float saveForce;
@@ -55,10 +56,10 @@ public class IA_Fish : MonoBehaviour
 
     [Space]
     [Header("Timer : ")]
-    public float timerWaitDurationMax = 10 ;
-    public float timerTargetDurationMax = 5 ;
+    public float timerWaitDurationMax = 10;
+    public float timerTargetDurationMax = 5;
 
-    public float timerWaitUntilNextTarget ;
+    public float timerWaitUntilNextTarget;
     public float timerTarget;
 
     [Space]
@@ -115,20 +116,20 @@ public class IA_Fish : MonoBehaviour
     }
 
 
-    
+
     /*
      * Fonction de deplacement  
      */
     public void Moving()
     {
-        if(!getEaten || isStoppedToEat) // paralise le poisson si il se fait manger pour eviter des bugs
+        if (!getEaten || isStoppedToEat) // paralise le poisson si il se fait manger pour eviter des bugs
         {
             Vector3 acceleration = Vector3.zero;
 
-            if(target == null)
+            if (target == null)
             {
                 target = fishZoneMovement.transform.GetChild(0);
-    
+
             }
 
             GestionRotationFish();
@@ -144,7 +145,7 @@ public class IA_Fish : MonoBehaviour
                         StartCoroutine(Eat());
 
                     }
-                    else if(Vector3.Distance(this.position, food.position) < 1)
+                    else if (Vector3.Distance(this.position, food.position) < 1)
                     {
 
                         StartCoroutine(Eat());
@@ -158,9 +159,9 @@ public class IA_Fish : MonoBehaviour
                 }
 
                 else if (Vector3.Distance(transform.position, target.position) < 10f)
-                
-                    {
-                    fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPos();
+
+                {
+                    // fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
                     target = fishZoneMovement.transform.GetChild(0);
                 }
                 else
@@ -169,7 +170,7 @@ public class IA_Fish : MonoBehaviour
                     acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
                 }
 
-                
+
             }
 
             //gerer le banc de poisson (si il y en a 1)
@@ -305,9 +306,9 @@ public class IA_Fish : MonoBehaviour
      * vers laquelle le poisson va se diriger
      * 
      */
-    Vector3 SteerTowards(Vector3 vector3) 
+    Vector3 SteerTowards(Vector3 vector3)
     {
-      
+
         Vector3 v = vector3.normalized * settings.maxSpeed - velocity;
         return Vector3.ClampMagnitude(v, settings.maxSteerForce);
     }
@@ -318,7 +319,7 @@ public class IA_Fish : MonoBehaviour
      */
     public bool isGoingToCollideSomething()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position,settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity,  Mathf.Infinity);
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity, Mathf.Infinity);
 
         Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.green);
 
@@ -335,7 +336,7 @@ public class IA_Fish : MonoBehaviour
         return false; // au cas où :)
     }
 
-    
+
     /*
      * Fontion permettant de trouver la première direction que le poisson peut prendre
      * qui ne possède pas de collision à la fin
@@ -372,55 +373,50 @@ public class IA_Fish : MonoBehaviour
         const int numViewDirections = 100;
 
         Vector2[] directions = new Vector2[numViewDirections];
-        
-       float goldenRatio = (1 + Mathf.Sqrt(5)) / 2;
-       float angleIncrement = Mathf.PI * 2 * goldenRatio;
 
-       for (int i = 0; i < numViewDirections; i++)
-       {
-           float t = (float)i / numViewDirections;
-           float inclination = Mathf.Acos(1 - 2 * t);
-           float azimuth = angleIncrement * i; 
+        float goldenRatio = (1 + Mathf.Sqrt(5)) / 2;
+        float angleIncrement = Mathf.PI * 2 * goldenRatio;
 
-           float x = Mathf.Sin(inclination); //anciennemnt azimuth
-           float y = Mathf.Cos(inclination); //anciennemnt azimuth
+        for (int i = 0; i < numViewDirections; i++)
+        {
+            float t = (float)i / numViewDirections;
+            float inclination = Mathf.Acos(1 - 2 * t);
+            float azimuth = angleIncrement * i;
+
+            float x = Mathf.Sin(inclination); //anciennemnt azimuth
+            float y = Mathf.Cos(inclination); //anciennemnt azimuth
 
 
-           directions[i] = new Vector3(x, y);
+            directions[i] = new Vector3(x, y);
 
 
         }
-       
+
         /*
          float turnFraction = 1.68f;
         for (int i = 0; i < numViewDirections; i++)
         {
             float dst =   i / (numViewDirections -1f);
             float angle  = 2 * Mathf.PI * turnFraction * i;
-
-
             float x = dst * Mathf.Sin(angle);
             float y = dst * Mathf.Cos(angle);
-
-
             directions[i] = new Vector3(x, y);
-
             Debug.DrawRay(transform.position, directions[i] *settings.collisionAvoidDst, Color.white);
         }
         */
         return directions;
     }
 
-    public  IEnumerator DetectingFood()
+    public IEnumerator DetectingFood()
     {
-        
+
         var particles = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Food"));
         {
-            if(particles.Length > 0)
+            if (particles.Length > 0)
             {
-                foreach(var particule in particles)//.Where(particles => particles.gameObject.CompareTag(regime.ToString()))
+                foreach (var particule in particles)//.Where(particles => particles.gameObject.CompareTag(regime.ToString()))
                 {
-                    if(particule.tag == regime.ToString() || regime.ToString() == FeedingRegime.Omnivore.ToString())
+                    if (particule.tag == regime.ToString() || regime.ToString() == FeedingRegime.Omnivore.ToString())
                     {
                         food = particule.transform;
                         target = food;
@@ -436,9 +432,9 @@ public class IA_Fish : MonoBehaviour
         }
         yield return new WaitForSeconds(0.1f); StartCoroutine(DetectingFood());
     }
-       
 
-    
+
+
     public IEnumerator Eat()
     {
         StopCoroutine(DetectingFood());
@@ -450,7 +446,7 @@ public class IA_Fish : MonoBehaviour
         }
 
         if (food)
-        { 
+        {
             Destroy(food.gameObject);
             target = null;
             food = null;
@@ -481,28 +477,19 @@ public class IA_Fish : MonoBehaviour
     public Transform NouvelleTarget()
     {
         float topPos = fishZoneMovement.transform.position.y + 5f;
-
         float bottomPos = fishZoneMovement.transform.position.y - 5f;
-
-
         float rightPos = fishZoneMovement.transform.position.x - 5f;
-
         float leftPos = fishZoneMovement.transform.position.x + 5f;
-
-
-
         foreach(Vector2 p in fishZoneMovement.GetComponent<PolygonCollider2D>().points)
         {
             if(p.x > leftPos)
             {
                 leftPos = p.x;
             }
-
             if(p.x < rightPos)
             {
                 rightPos = p.x;
             }
-
             if(p.y > topPos)
             {
                 topPos = p.y;
@@ -512,24 +499,18 @@ public class IA_Fish : MonoBehaviour
                 bottomPos = p.y;
             }
         }
-
-
         Vector2 pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
-
-
-
            
    
         while(!fishZoneMovement.GetComponent<Collider2D>().OverlapPoint(pointPos))
         {
             pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
         }
-
         fishZoneMovement.transform.GetChild(0).position = pointPos;
-
     
-
         return fishZoneMovement.transform.GetChild(0);
     }
     */
 }
+
+

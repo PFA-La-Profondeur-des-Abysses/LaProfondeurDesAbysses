@@ -160,7 +160,7 @@ public class IA_Fish : MonoBehaviour
                 else if (Vector3.Distance(transform.position, target.position) < 10f)
                 
                     {
-                   // fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
+                    fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPos();
                     target = fishZoneMovement.transform.GetChild(0);
                 }
                 else

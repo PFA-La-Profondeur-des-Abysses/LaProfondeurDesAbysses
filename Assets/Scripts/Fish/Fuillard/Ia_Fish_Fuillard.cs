@@ -42,7 +42,7 @@ public class Ia_Fish_Fuillard : IA_Fish
                 else
                 {
                     hidden = false;
-                    target = spawnPoint.transform;
+                    //target = spawnPoint.transform;
                 }
             }
         }

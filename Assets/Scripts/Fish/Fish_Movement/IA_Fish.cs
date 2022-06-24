@@ -63,8 +63,8 @@ public class IA_Fish : MonoBehaviour
 
     [Space]
     [Header("Spawner Info :")]
-    public GameObject spawnPointPrefab;
-    public GameObject spawnPoint;
+    //public GameObject spawnPointPrefab;
+    //public GameObject spawnPoint;
 
 
     private Vector3 startScale;
@@ -108,7 +108,7 @@ public class IA_Fish : MonoBehaviour
         timerWaitUntilNextTarget = 5f;
         timerTarget = 0f;
 
-        spawnPoint = Instantiate(spawnPointPrefab, transform.position, transform.rotation);
+        //spawnPoint = Instantiate(spawnPointPrefab, transform.position, transform.rotation);
 
         getEaten = false;
         saveForce = force;
@@ -269,7 +269,7 @@ public class IA_Fish : MonoBehaviour
                     timerWaitUntilNextTarget -= Time.deltaTime;
                     if (timerWaitUntilNextTarget < 0)
                     {
-                        target = spawnPoint.transform;
+                        //target = spawnPoint.transform;
                         timerTarget = Random.Range(2, timerTargetDurationMax);
 
                     }

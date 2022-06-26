@@ -5,22 +5,33 @@ using UnityEngine;
 public class FishZonePointMovingAmeliorer : MonoBehaviour
 {
     public Vector3 startPos;
+
     public float topPos;
-
     public float bottomPos;
-
-
     public float rightPos;
-
     public float leftPos;
+
     public List<Vector2> listPoints;
 
     public bool seachingNewPos;
-    public Collider2D collider;
+
+    public Collider2D inThisCollider;
+
+    public LayerMask layerZone;
+
+    public Collider2D parentCollider;
+
+
 
     public void Start()
     {
         seachingNewPos = false;
+
+        topPos = transform.parent.gameObject.GetComponent<PolygonCollider2D>().points[0].x ;
+        bottomPos = transform.parent.gameObject.GetComponent<PolygonCollider2D>().points[0].y;
+        rightPos = transform.parent.gameObject.GetComponent<PolygonCollider2D>().points[0].x;
+        leftPos = transform.parent.gameObject.GetComponent<PolygonCollider2D>().points[0].x;
+
         foreach (Vector2 p in transform.parent.gameObject.GetComponent<PolygonCollider2D>().points)
         {
 
@@ -48,6 +59,8 @@ public class FishZonePointMovingAmeliorer : MonoBehaviour
                 bottomPos = v.y;
             }
         }
+
+        parentCollider = transform.GetComponentInParent<Collider2D>();
 
         startPos = transform.localPosition;
 
@@ -81,40 +94,92 @@ public class FishZonePointMovingAmeliorer : MonoBehaviour
     }
 
     public void newPos()
-    {
-
-        Vector2[] tabVector = new Vector2[20];
-
-        for(int i = 0; i < 20; i++)
+    { 
+        /*
+        if(parentCollider != null)
         {
-            tabVector[i] = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
+            Vector2[] tabVector = new Vector2[60];
+            seachingNewPos = true;
 
-        }
+            for (int i = 0; i < 60; i++)
+            {
+                tabVector[i] = new Vector2(Random.Range((float)rightPos, (float)leftPos), Random.Range((float)bottomPos, (float)topPos));
 
-        foreach(Vector2 v in tabVector)
-        {
-            transform.localPosition = v;
-            collider = Physics2D.OverlapCircle(transform.position, 3f);
+            }
 
-            if(collider!=null)  Debug.Log(collider.gameObject.name);
+            foreach (Vector2 v in tabVector)
+            {
+                //transform.localPosition = v;
+                inThisCollider = Physics2D.OverlapCircle(v + (Vector2)transform.parent.position, 2f, layerZone);//test avec des pos local sur une world pos.
+                                                                                                                //ClosestPoint
+                if (inThisCollider != null && parentCollider == inThisCollider ) 
+                {
 
-            if (collider != null && transform.GetComponentInParent<Collider2D>() == collider)
+                    //Debug.Log("New Pos ! " + v + " old : " + startPos);
+                    transform.localPosition = v;
+                    seachingNewPos = false;
+                    //break;
+                }
+            }
+
+
+            inThisCollider = Physics2D.OverlapCircle(transform.position, 3f, layerZone);
+
+            if ((inThisCollider == null || parentCollider != inThisCollider || seachingNewPos == true) && parentCollider != null && tabVector.Length > 0)
             {
 
-                Debug.Log("New Pos ! " + v + " old : " + startPos);
-                transform.localPosition = v;
-                seachingNewPos = false;
-                break;
+                transform.localPosition = parentCollider.ClosestPoint(tabVector[1]);
+
+                parentCollider.OverlapPoint(transform.position);
+
+                if (!parentCollider.OverlapPoint(transform.position)) // check si le point se situe dans le collider.
+                {
+                    transform.localPosition = startPos;
+                }
+                //transform.localPosition = startPos;
+
             }
+
+            if (!parentCollider.OverlapPoint(transform.position) && parentCollider)
+            {
+                transform.localPosition = startPos;
+            }
+
+            tabVector = null;
         }
+       */
 
-
-        collider = Physics2D.OverlapCircle(transform.position, 3f);
-
-        if (collider == null || transform.GetComponentInParent<Collider2D>() != collider)
+        if(parentCollider != null)
         {
+            Vector2[] tabVector = new Vector2[60];
+            seachingNewPos = true;
 
-            transform.localPosition = startPos;
+            for (int i = 0; i < 60; i++)
+            {
+                tabVector[i] = new Vector2(Random.Range((float)rightPos, (float)leftPos), Random.Range((float)bottomPos, (float)topPos));
+
+            }
+
+            foreach (Vector2 v in tabVector)
+            {
+                //transform.localPosition = v;
+               
+                if (parentCollider.OverlapPoint(v + (Vector2)parentCollider.transform.position))
+                {
+
+                    //Debug.Log("New Pos ! " + v + " old : " + startPos);
+                    transform.localPosition = v;
+                    seachingNewPos = false;
+                    break;
+                }
+            }
+
+            if(!parentCollider.OverlapPoint(transform.position))
+            {
+                Vector3 oldpos = transform.position;
+                transform.position = parentCollider.ClosestPoint(oldpos);
+            }
+
 
         }
     }
@@ -130,9 +195,9 @@ public class FishZonePointMovingAmeliorer : MonoBehaviour
     {
         Debug.Log("Chekcing ");
 
-        collider = Physics2D.OverlapCircle(v, 2f);
+        inThisCollider = Physics2D.OverlapCircle(v + (Vector2)transform.parent.position, 2f, layerZone);
 
-        if (collider != null && transform.GetComponentInParent<Collider2D>() == collider)
+        if (inThisCollider != null && transform.GetComponentInParent<Collider2D>() == inThisCollider)
         {
             Debug.Log("IT IS IN");
             return true;

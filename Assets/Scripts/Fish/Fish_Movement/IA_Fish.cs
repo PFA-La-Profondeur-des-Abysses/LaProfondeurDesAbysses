@@ -38,6 +38,7 @@ public class IA_Fish : MonoBehaviour
     public Vector3 forward;
     public Vector3 right;
     public Vector3 velocity;
+    private Transform head;
 
 
     // Variables we will have to update 
@@ -66,11 +67,12 @@ public class IA_Fish : MonoBehaviour
     //public GameObject spawnPointPrefab;
     //public GameObject spawnPoint;
 
-
     private Vector3 startScale;
 
     void Awake()
     {
+        head = transform.GetChild(0);
+        
         startScale = transform.localScale;
         Debug.Log(transform.rotation.eulerAngles);
         forward = transform.forward;
@@ -121,6 +123,8 @@ public class IA_Fish : MonoBehaviour
      */
     public void Moving()
     {
+        if (target && target == food && Vector3.Distance(target.position, head.position) < 0.1) isStoppedToEat = true;
+        
         if (!getEaten || isStoppedToEat) // paralise le poisson si il se fait manger pour eviter des bugs
         {
             Vector3 acceleration = Vector3.zero;
@@ -138,34 +142,31 @@ public class IA_Fish : MonoBehaviour
 
                 if (isEating && food)
                 {
-                    if (Vector3.Distance(position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
+                    if (Vector3.Distance(head.position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
                     {
 
                         StartCoroutine(Eat());
 
                     }
-                    else if (Vector3.Distance(position, food.position) < 1)
+                    else if (Vector3.Distance(head.position, food.position) < 1)
                     {
 
                         StartCoroutine(Eat());
                     }
                     else
                     {
-                        Vector3 offSetToTarget = (target.position - position);
+                        Vector3 offSetToTarget = food.position - head.position;
                         acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
                     }
-
                 }
-
                 else if (Vector3.Distance(transform.position, target.position) < 10f)
-
                 {
                     // fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
                     target = fishZoneMovement.transform.GetChild(0);
                 }
                 else
                 {
-                    Vector3 offSetToTarget = (target.position - position);
+                    Vector3 offSetToTarget = target.position - position;
                     acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
                 }
 
@@ -206,7 +207,7 @@ public class IA_Fish : MonoBehaviour
             //Setup de la velocité, vitesse...
 
 
-            if (isEating && food && Vector3.Distance(position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
+            if (isEating && food && Vector3.Distance(head.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
             {
 
                 StartCoroutine(Eat());
@@ -401,24 +402,22 @@ public class IA_Fish : MonoBehaviour
     {
 
         var particles = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Food"));
+        if (particles.Length > 0)
         {
-            if (particles.Length > 0)
+            foreach (var particule in particles)//.Where(particles => particles.gameObject.CompareTag(regime.ToString()))
             {
-                foreach (var particule in particles)//.Where(particles => particles.gameObject.CompareTag(regime.ToString()))
+                if (particule.tag == regime.ToString() || regime.ToString() == FeedingRegime.Omnivore.ToString())
                 {
-                    if (particule.tag == regime.ToString() || regime.ToString() == FeedingRegime.Omnivore.ToString())
-                    {
-                        food = particule.transform;
-                        target = food;
-                        isEating = true;
-                        break;
-                    }
+                    food = particule.transform;
+                    target = food;
+                    isEating = true;
+                    break;
                 }
             }
-            else
-            {
-                isEating = false;
-            }
+        }
+        else
+        {
+            isEating = false;
         }
         yield return new WaitForSeconds(0.1f); StartCoroutine(DetectingFood());
     }
@@ -428,12 +427,14 @@ public class IA_Fish : MonoBehaviour
     public IEnumerator Eat()
     {
         StopCoroutine(DetectingFood());
+        GetComponent<Animator>().SetBool("Eating", true);
         float eatingTime = 1;
         while (eatingTime > 0 && food)
         {
             eatingTime -= Time.deltaTime;
             yield return null;
         }
+        GetComponent<Animator>().SetBool("Eating", false);
 
         if (food)
         {

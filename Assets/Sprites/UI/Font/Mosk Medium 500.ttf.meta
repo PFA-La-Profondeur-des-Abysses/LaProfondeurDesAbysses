@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: d18eca67ea96a6c41a1454b11e9f6d4e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Mosk
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: e0f0d12decf4eac439833c911b98abba, type: 3}
+  - {fileID: 12800000, guid: 61292d58537d4dc439cf4a64109d3150, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

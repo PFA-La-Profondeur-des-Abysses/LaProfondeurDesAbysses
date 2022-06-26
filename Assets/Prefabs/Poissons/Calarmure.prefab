@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2227352715744930568}
   - component: {fileID: 4561117662369964858}
   - component: {fileID: 5044930448586854277}
+  - component: {fileID: 6687321217803914627}
   m_Layer: 12
   m_Name: Calarmure
   m_TagString: Fish
@@ -169,6 +170,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!70 &6687321217803914627
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080659685433852588}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 15.84, y: 2.1091568}
+  m_Direction: 1
 --- !u!1 &1080659685738875685
 GameObject:
   m_ObjectHideFlags: 0

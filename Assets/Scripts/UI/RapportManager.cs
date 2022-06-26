@@ -211,16 +211,17 @@ public class RapportManager : MonoBehaviour
     {
         if (fishPage[pages[currentPage]] == Fish.GetFishEnumFromFish(fish))
         {
+            fish.pictureTaken = true;
             GetInfo().text = "Size: " + fish.size + "\n" +
                              "Robe: " + fish.robe + "\n" +
                              "Weight: " + fish.weight + "\n";
         }
-        else
+        /*else
         {
             GetInfo().text = "Size: " + "\n" +
                              "Robe: " + "\n" +
                              "Weight: " + "\n";
-        }
+        }*/
     }
 
     public void DeselectEverything()

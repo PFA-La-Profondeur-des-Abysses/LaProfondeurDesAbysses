@@ -304,7 +304,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (fish.pictureTaken) return;
         
-        fish.pictureTaken = true;
         RapportManager.rapportManager.FillInfo(fish);
     }
 

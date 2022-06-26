@@ -68,6 +68,7 @@ public class Fish
             { FishNames.RequinThermal, new Fish("Requin Thermal", "6m", "Grise", "1T") },
             { FishNames.Sardine, new Fish("Sardine", "20cm", "argenté", "30g") },
             { FishNames.Charybarvus, new Fish("Charybarvus", "17m", "violette", "1T") },
+            { FishNames.Surprise, new Fish("???", "???", "???", "???") },
         };
     }
 }
@@ -98,7 +99,8 @@ public enum FishNames
     RequinRenard,
     RequinThermal,
     Sardine,
-    Charybarvus
+    Charybarvus,
+    Surprise
 
 }
 

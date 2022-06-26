@@ -113,7 +113,7 @@ public class AppareilPhoto : MonoBehaviour
 
     private void DetectFishes()
     {
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, Vector2.one, 0, transform.forward);
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, Vector2.one * 4, 0, transform.forward);
         foreach (var hit in hits)
         {
             if (hit.collider.CompareTag("Fish"))

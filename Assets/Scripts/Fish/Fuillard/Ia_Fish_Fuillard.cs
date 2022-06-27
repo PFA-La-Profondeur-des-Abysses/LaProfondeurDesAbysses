@@ -13,101 +13,92 @@ public class Ia_Fish_Fuillard : IA_Fish
         hidden = false;
         StartCoroutine(DetectingFood());
         target = fishZoneMovement.transform.GetChild(0);
-
-    
     }
-        // Update is called once per frame
-        void FixedUpdate()
+    
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (!hidden)
         {
-            if (!hidden)
+            Fuite();
+            Moving();
+            if (target.gameObject.CompareTag("Cachette"))
             {
-                Fuite();
-                Moving();
-                if (target.gameObject.CompareTag("Cachette"))
+                if (Vector3.Distance(transform.position, target.gameObject.transform.position) < 3)
                 {
-                    if (Vector3.Distance(transform.position, target.gameObject.transform.position) < 3)
-                    {
-                        hidden = true;
-                    }
-                }
-            }
-
-            if (hidden)
-            {
-                var objectAFuir = Physics2D.OverlapCircleAll(transform.position, 30, LayerMask.GetMask("Player"));
-                if (objectAFuir.Length > 0)
-                {
-                    return;
-                }
-                else
-                {
-                    hidden = false;
-                    target = spawnPoint.transform;
+                    hidden = true;
                 }
             }
         }
 
-        /*
-         * Fonction cherchant dans la liste de point de fuite, le point de fuite le plus �loign� 
-         * du danger que le poisson doit fuire et le rejoindre au plus vite 
-         */
-        public void Fuite()
+        if (hidden)
         {
-            if (PointDeFuite.Count == 0) return;
-            GameObject lePlusProche;
-            if (doitFuir())
+            var objectAFuir = Physics2D.OverlapCircleAll(transform.position, 30, LayerMask.GetMask("Player"));
+            if (objectAFuir.Length <= 0)
             {
-                var objectAFuir = Physics2D.OverlapCircleAll(transform.position, 30, LayerMask.GetMask("Player"));
-                if (objectAFuir.Length > 0)
-                {
-                    lePlusProche = objectAFuir[0].gameObject;
-                    foreach (Collider2D c in objectAFuir)
-                    {
-                        if (Vector3.Distance(lePlusProche.transform.position, transform.position) < Vector3.Distance(c.gameObject.transform.position, transform.position))
-                        {
-                            lePlusProche = c.gameObject;
-                        }
-                    }
-
-
-                    GameObject pointFuiteChoisi = PointDeFuite[0];
-
-                    foreach (GameObject go in PointDeFuite)
-                    {
-                        if (Vector3.Distance(go.transform.position, transform.position) < Vector3.Distance(lePlusProche.transform.position, go.transform.position)
-                            && Vector3.Distance(go.transform.position, transform.position) < Vector3.Distance(pointFuiteChoisi.transform.position, transform.position))
-
-                        {
-                            pointFuiteChoisi = go;
-                        }
-                    }
-
-
-                    target = pointFuiteChoisi.transform;
-                    food = null;
-                    isEating = false;
-
-                }
-
+                hidden = false;
+                //target = spawnPoint.transform;
             }
         }
+    }
 
-        /*
-         * Fonction qui d�fini si oui ou non le poisson doit fult 
-         */
-        public bool doitFuir()
+    /*
+     * Fonction cherchant dans la liste de point de fuite, le point de fuite le plus �loign� 
+     * du danger que le poisson doit fuire et le rejoindre au plus vite 
+     */
+    public void Fuite()
+    {
+        if (PointDeFuite.Count == 0) return;
+        GameObject lePlusProche;
+        if (doitFuir())
         {
             var objectAFuir = Physics2D.OverlapCircleAll(transform.position, 30, LayerMask.GetMask("Player"));
             if (objectAFuir.Length > 0)
             {
-                return true;
-            }
-            else
-            {
+                lePlusProche = objectAFuir[0].gameObject;
+                foreach (Collider2D c in objectAFuir)
+                {
+                    if (Vector3.Distance(lePlusProche.transform.position, transform.position) < Vector3.Distance(c.gameObject.transform.position, transform.position))
+                    {
+                        lePlusProche = c.gameObject;
+                    }
+                }
+
+
+                GameObject pointFuiteChoisi = PointDeFuite[0];
+
+                foreach (GameObject go in PointDeFuite)
+                {
+                    if (Vector3.Distance(go.transform.position, transform.position) < Vector3.Distance(lePlusProche.transform.position, go.transform.position)
+                        && Vector3.Distance(go.transform.position, transform.position) < Vector3.Distance(pointFuiteChoisi.transform.position, transform.position))
+
+                    {
+                        pointFuiteChoisi = go;
+                    }
+                }
+
+
+                target = pointFuiteChoisi.transform;
+                food = null;
+                isEating = false;
 
             }
-            return false;
+
         }
+    }
+
+    /*
+     * Fonction qui d�fini si oui ou non le poisson doit fult 
+     */
+    public bool doitFuir()
+    {
+        var objectAFuir = Physics2D.OverlapCircleAll(transform.position, 30, LayerMask.GetMask("Player"));
+        if (objectAFuir.Length > 0)
+        {
+            return true;
+        }
+        return false;
+    }
 
 
 

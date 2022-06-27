@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     float angleRotationZ;
     float angleRotationY;
 
+    public bool canMove;
     private Rigidbody2D rb;
 
     public static PlayerMovement player;
@@ -78,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canMove = true;
         player = this;
         
         rb = gameObject.GetComponent<Rigidbody2D>() as Rigidbody2D;
@@ -111,12 +113,16 @@ public class PlayerMovement : MonoBehaviour
 
         }
         */
+        
+        if(canMove)
+        {
+            speed = startSpeed;
 
-        speed = startSpeed;
+            if (playerControls.Player.Turbo.IsPressed()) Turbo();
+
+            MovementAndRotation();
+        }
         
-        if(playerControls.Player.Turbo.IsPressed()) Turbo();
-        
-        MovementAndRotation();
 
     }
 
@@ -298,7 +304,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (fish.pictureTaken) return;
         
-        fish.pictureTaken = true;
         RapportManager.rapportManager.FillInfo(fish);
     }
 

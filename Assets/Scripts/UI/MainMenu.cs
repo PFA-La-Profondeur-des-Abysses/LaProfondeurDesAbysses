@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
 {
     public Animator fadeIn;
     public Slider slider;
+    public GameObject explanationText;
     public GameObject clickText;
     public Button button;
 
@@ -18,18 +19,18 @@ public class MainMenu : MonoBehaviour
         if(Input.anyKeyDown && clickText.activeSelf) Unload();
     }
     
-    public void Play()
+    public void Play(int index = 1)
     {
         button.onClick.RemoveAllListeners();
         fadeIn.SetTrigger("FadeIn");
-        StartCoroutine(LoadGameScene());
+        StartCoroutine(LoadGameScene(index));
     }
 
-    private IEnumerator LoadGameScene()
+    private IEnumerator LoadGameScene(int index = 1)
     {
         yield return new WaitForSeconds(1f);
         Time.timeScale = 0;
-        var loading = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        var loading = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
         while (!loading.isDone)
         {
             slider.value = loading.progress;
@@ -37,6 +38,7 @@ public class MainMenu : MonoBehaviour
         }
         slider.gameObject.SetActive(false);
         clickText.SetActive(true);
+        if(index != 1) explanationText.SetActive(false);
     }
 
     private void Unload()
@@ -44,5 +46,10 @@ public class MainMenu : MonoBehaviour
         Debug.Log("unload");
         Time.timeScale = 1;
         SceneManager.UnloadSceneAsync(0);
+    }
+
+    public void Leave()
+    {
+        Application.Quit();
     }
 }

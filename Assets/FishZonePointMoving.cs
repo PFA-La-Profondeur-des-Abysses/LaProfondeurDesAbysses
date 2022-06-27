@@ -59,7 +59,7 @@ public class FishZonePointMoving : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(seachingNewPos)
+        if (seachingNewPos)
         {
             Vector2 pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
             transform.localPosition = pointPos;

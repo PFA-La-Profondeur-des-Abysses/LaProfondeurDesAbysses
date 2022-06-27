@@ -18,9 +18,9 @@ public class IA_Fish : MonoBehaviour
     public Transform food;
     public bool isEating;
     public bool isStoppedToEat;
-    
+
     public float runToTargetSpeed = 2f;
-    
+
     [Space]
     public float force;
     public float saveForce;
@@ -30,7 +30,7 @@ public class IA_Fish : MonoBehaviour
     public GameObject fishZoneMovement;
     [Space]
 
-    public bool getEaten = false;
+    public bool getEaten;
 
     [Space]
     [HideInInspector]
@@ -38,6 +38,7 @@ public class IA_Fish : MonoBehaviour
     public Vector3 forward;
     public Vector3 right;
     public Vector3 velocity;
+    private Transform head;
 
 
     // Variables we will have to update 
@@ -55,22 +56,23 @@ public class IA_Fish : MonoBehaviour
 
     [Space]
     [Header("Timer : ")]
-    public float timerWaitDurationMax = 10 ;
-    public float timerTargetDurationMax = 5 ;
+    public float timerWaitDurationMax = 10;
+    public float timerTargetDurationMax = 5;
 
-    public float timerWaitUntilNextTarget ;
+    public float timerWaitUntilNextTarget;
     public float timerTarget;
 
     [Space]
     [Header("Spawner Info :")]
-    public GameObject spawnPointPrefab;
-    public GameObject spawnPoint;
-
+    //public GameObject spawnPointPrefab;
+    //public GameObject spawnPoint;
 
     private Vector3 startScale;
 
     void Awake()
     {
+        head = transform.GetChild(0);
+        
         startScale = transform.localScale;
         Debug.Log(transform.rotation.eulerAngles);
         forward = transform.forward;
@@ -108,41 +110,29 @@ public class IA_Fish : MonoBehaviour
         timerWaitUntilNextTarget = 5f;
         timerTarget = 0f;
 
-        spawnPoint = Instantiate(spawnPointPrefab, transform.position, transform.rotation);
+        //spawnPoint = Instantiate(spawnPointPrefab, transform.position, transform.rotation);
 
         getEaten = false;
         saveForce = force;
     }
-    /*
-    void Start()
-    {
-        StartCoroutine(DetectingFood());
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-       
 
 
-        Moving();
-       
-    }
 
-    */
     /*
      * Fonction de deplacement  
      */
     public void Moving()
     {
-        if(!getEaten || isStoppedToEat) // paralise le poisson si il se fait manger pour eviter des bugs
+        if (target && target == food && Vector3.Distance(target.position, head.position) < 0.1) isStoppedToEat = true;
+        
+        if (!getEaten || isStoppedToEat) // paralise le poisson si il se fait manger pour eviter des bugs
         {
             Vector3 acceleration = Vector3.zero;
 
-            if(target == null)
+            if (target == null)
             {
                 target = fishZoneMovement.transform.GetChild(0);
-    
+
             }
 
             GestionRotationFish();
@@ -152,39 +142,35 @@ public class IA_Fish : MonoBehaviour
 
                 if (isEating && food)
                 {
-                    if (Vector3.Distance(this.position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
+                    if (Vector3.Distance(head.position, food.position) < 10f && target.gameObject.CompareTag("Fish"))
                     {
 
                         StartCoroutine(Eat());
 
                     }
-                    else if(Vector3.Distance(this.position, food.position) < 1)
+                    else if (Vector3.Distance(head.position, food.position) < 1)
                     {
 
                         StartCoroutine(Eat());
                     }
                     else
                     {
-                        Vector3 offSetToTarget = (target.position - position);
+                        Vector3 offSetToTarget = food.position - head.position;
                         acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
                     }
-
                 }
-
                 else if (Vector3.Distance(transform.position, target.position) < 10f)
-                
-                    {
-                    Debug.Log("Arrived");
-                   // fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
+                {
+                    // fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
                     target = fishZoneMovement.transform.GetChild(0);
                 }
                 else
                 {
-                    Vector3 offSetToTarget = (target.position - position);
+                    Vector3 offSetToTarget = target.position - position;
                     acceleration = SteerTowards(offSetToTarget) * settings.targetWeight;
                 }
 
-                
+
             }
 
             //gerer le banc de poisson (si il y en a 1)
@@ -196,7 +182,7 @@ public class IA_Fish : MonoBehaviour
 
                 centreOfFlockMates /= numPerceivedFlockMates;
 
-                Vector3 offsetToFlockmatesCentre = (centreOfFlockMates - position);
+                Vector3 offsetToFlockmatesCentre = centreOfFlockMates - position;
 
                 var alignmentForce = SteerTowards(averageFlockHeading) * settings.alignWeight;
                 var cohesionForce = SteerTowards(offsetToFlockmatesCentre) * settings.cohesionWeight;
@@ -221,7 +207,7 @@ public class IA_Fish : MonoBehaviour
             //Setup de la velocité, vitesse...
 
 
-            if (isEating && food && Vector3.Distance(this.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
+            if (isEating && food && Vector3.Distance(head.position, food.position) < 1f && !target.CompareTag("Fish") || isStoppedToEat)
             {
 
                 StartCoroutine(Eat());
@@ -247,14 +233,14 @@ public class IA_Fish : MonoBehaviour
                 speed = Mathf.Clamp(speed, settings.minSpeed, settings.maxSpeed);
                 velocity = dir * speed;
 
-                this.cachedTransform.position += velocity * Time.deltaTime;
+                cachedTransform.position += velocity * Time.deltaTime;
                 //this.cachedTransform.forward = dir;
-                this.cachedTransform.right = dir;
+                cachedTransform.right = dir;
 
-                this.position = cachedTransform.position;
+                position = cachedTransform.position;
 
                 //this.forward = dir;
-                this.right = dir;
+                right = dir;
             }
 
 
@@ -284,7 +270,7 @@ public class IA_Fish : MonoBehaviour
                     timerWaitUntilNextTarget -= Time.deltaTime;
                     if (timerWaitUntilNextTarget < 0)
                     {
-                        target = spawnPoint.transform;
+                        //target = spawnPoint.transform;
                         timerTarget = Random.Range(2, timerTargetDurationMax);
 
                     }
@@ -305,13 +291,13 @@ public class IA_Fish : MonoBehaviour
         if (right.x > 0)
         {
 
-            this.transform.localScale = startScale;
+            transform.localScale = startScale;
         }
 
         if (right.x < 0)
         {
 
-            this.transform.localScale = new Vector3(startScale.x, -startScale.y, startScale.z);
+            transform.localScale = new Vector3(startScale.x, -startScale.y, startScale.z);
         }
     }
 
@@ -320,9 +306,9 @@ public class IA_Fish : MonoBehaviour
      * vers laquelle le poisson va se diriger
      * 
      */
-    Vector3 SteerTowards(Vector3 vector3) 
+    Vector3 SteerTowards(Vector3 vector3)
     {
-      
+
         Vector3 v = vector3.normalized * settings.maxSpeed - velocity;
         return Vector3.ClampMagnitude(v, settings.maxSteerForce);
     }
@@ -333,24 +319,19 @@ public class IA_Fish : MonoBehaviour
      */
     public bool isGoingToCollideSomething()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position,settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity,  Mathf.Infinity);
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity, Mathf.Infinity);
 
         Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.green);
 
         if (hit)
         {
-
             Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.red);
             return true;
-        }
-        else
-        {
-
         }
         return false; // au cas où :)
     }
 
-    
+
     /*
      * Fontion permettant de trouver la première direction que le poisson peut prendre
      * qui ne possède pas de collision à la fin
@@ -384,88 +365,79 @@ public class IA_Fish : MonoBehaviour
     public Vector2[] IA_FishHelper()
     {
 
-        const int numViewDirections = 300;
+        const int numViewDirections = 100;
 
         Vector2[] directions = new Vector2[numViewDirections];
-        
-       float goldenRatio = (1 + Mathf.Sqrt(5)) / 2;
-       float angleIncrement = Mathf.PI * 2 * goldenRatio;
 
-       for (int i = 0; i < numViewDirections; i++)
-       {
-           float t = (float)i / numViewDirections;
-           float inclination = Mathf.Acos(1 - 2 * t);
-           float azimuth = angleIncrement * i; 
+        for (int i = 0; i < numViewDirections; i++)
+        {
+            float t = (float)i / numViewDirections;
+            float inclination = Mathf.Acos(1 - 2 * t);
 
-           float x = Mathf.Sin(inclination); //anciennemnt azimuth
-           float y = Mathf.Cos(inclination); //anciennemnt azimuth
+            float x = Mathf.Sin(inclination); //anciennemnt azimuth
+            float y = Mathf.Cos(inclination); //anciennemnt azimuth
 
 
-           directions[i] = new Vector3(x, y);
+            directions[i] = new Vector3(x, y);
 
 
         }
-       
+
         /*
          float turnFraction = 1.68f;
         for (int i = 0; i < numViewDirections; i++)
         {
             float dst =   i / (numViewDirections -1f);
             float angle  = 2 * Mathf.PI * turnFraction * i;
-
-
             float x = dst * Mathf.Sin(angle);
             float y = dst * Mathf.Cos(angle);
-
-
             directions[i] = new Vector3(x, y);
-
             Debug.DrawRay(transform.position, directions[i] *settings.collisionAvoidDst, Color.white);
         }
         */
         return directions;
     }
 
-    public  IEnumerator DetectingFood()
+    public IEnumerator DetectingFood()
     {
-        
+
         var particles = Physics2D.OverlapCircleAll(transform.position, 50, LayerMask.GetMask("Food"));
+        if (particles.Length > 0)
         {
-            if(particles.Length > 0)
+            foreach (var particule in particles)//.Where(particles => particles.gameObject.CompareTag(regime.ToString()))
             {
-                foreach(var particule in particles)//.Where(particles => particles.gameObject.CompareTag(regime.ToString()))
+                if (particule.tag == regime.ToString() || regime.ToString() == FeedingRegime.Omnivore.ToString())
                 {
-                    if(particule.tag == regime.ToString() || regime.ToString() == FeedingRegime.Omnivore.ToString())
-                    {
-                        food = particule.transform;
-                        target = food;
-                        isEating = true;
-                        break;
-                    }
+                    food = particule.transform;
+                    target = food;
+                    isEating = true;
+                    break;
                 }
             }
-            else
-            {
-                isEating = false;
-            }
+        }
+        else
+        {
+            isEating = false;
         }
         yield return new WaitForSeconds(0.1f); StartCoroutine(DetectingFood());
     }
-       
 
-    
+
+
     public IEnumerator Eat()
     {
         StopCoroutine(DetectingFood());
+        GetComponent<Animator>().SetBool("Eating", true);
         float eatingTime = 1;
         while (eatingTime > 0 && food)
         {
             eatingTime -= Time.deltaTime;
             yield return null;
         }
+        GetComponent<Animator>().SetBool("Eating", false);
 
         if (food)
-        { 
+        {
             Destroy(food.gameObject);
             target = null;
             food = null;
@@ -496,28 +468,19 @@ public class IA_Fish : MonoBehaviour
     public Transform NouvelleTarget()
     {
         float topPos = fishZoneMovement.transform.position.y + 5f;
-
         float bottomPos = fishZoneMovement.transform.position.y - 5f;
-
-
         float rightPos = fishZoneMovement.transform.position.x - 5f;
-
         float leftPos = fishZoneMovement.transform.position.x + 5f;
-
-
-
         foreach(Vector2 p in fishZoneMovement.GetComponent<PolygonCollider2D>().points)
         {
             if(p.x > leftPos)
             {
                 leftPos = p.x;
             }
-
             if(p.x < rightPos)
             {
                 rightPos = p.x;
             }
-
             if(p.y > topPos)
             {
                 topPos = p.y;
@@ -527,23 +490,15 @@ public class IA_Fish : MonoBehaviour
                 bottomPos = p.y;
             }
         }
-
-
         Vector2 pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
-
-
-
            
    
         while(!fishZoneMovement.GetComponent<Collider2D>().OverlapPoint(pointPos))
         {
             pointPos = new Vector2(Random.Range(rightPos, leftPos), Random.Range(bottomPos, topPos));
         }
-
         fishZoneMovement.transform.GetChild(0).position = pointPos;
-
     
-
         return fishZoneMovement.transform.GetChild(0);
     }
     */

@@ -161,7 +161,7 @@ public class IA_Fish : MonoBehaviour
                 }
                 else if (Vector3.Distance(transform.position, target.position) < 10f)
                 {
-                    // fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMoving>().newPointPos();
+                    fishZoneMovement.transform.GetChild(0).GetComponent<FishZonePointMovingAmeliorer>().newPos();
                     target = fishZoneMovement.transform.GetChild(0);
                 }
                 else
@@ -321,11 +321,11 @@ public class IA_Fish : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, settings.avoidanceRadius, right, settings.collisionAvoidDst, settings.obstacleMask, -Mathf.Infinity, Mathf.Infinity);
 
-        Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.green);
+       // Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.green);
 
         if (hit)
         {
-            Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.red);
+            //Debug.DrawRay(transform.GetChild(0).transform.position, right * settings.collisionAvoidDst, Color.red);
             return true;
         }
         return false; // au cas où :)
